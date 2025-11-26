@@ -1,10 +1,45 @@
-<amplify-authenticator style="background: rgb(141, 10, 10);">
-  <ng-template
-    amplifySlot="authenticated"
-    let-user="user"
-    let-signOut="signOut"
-  >
-    <app-shopping-list></app-shopping-list>
-    <button (click)="signOut()">Sign Out</button>
-  </ng-template>
-</amplify-authenticator>
+<ion-app>
+  <amplify-authenticator>
+    <ng-template
+      amplifySlot="authenticated"
+      let-user="user"
+      let-signOut="signOut"
+    >
+      <ion-menu content-id="content">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>
+              Menu
+            </ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-item>
+            <ion-menu-toggle>
+              <ion-button (click)="go('my-lists')">Home</ion-button>
+            </ion-menu-toggle>
+          </ion-item>
+          <ion-item>
+            <ion-menu-toggle>
+              <ion-button (click)="signOut()">Sign Out</ion-button>
+            </ion-menu-toggle>
+          </ion-item>
+        </ion-content>
+      </ion-menu>
+      <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+          <ion-item>
+            <ion-title>SharedShopping</ion-title>
+          </ion-item>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content id="content" >
+        <ion-router-outlet></ion-router-outlet>
+      </ion-content>
+    </ng-template>
+  </amplify-authenticator>
+</ion-app>
+
