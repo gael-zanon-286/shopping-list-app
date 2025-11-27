@@ -19,6 +19,7 @@ const schema = a.schema({
   Item: a.model({
     name: a.string().required(),
     cost: a.float(),
+    isStriked: a.boolean(),
     listID: a.id(),
     shoppingList: a.belongsTo("ShoppingList", "listID")
   }).authorization((allow) => [

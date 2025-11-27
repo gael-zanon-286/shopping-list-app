@@ -16,7 +16,7 @@
         <ion-content>
           <ion-item>
             <ion-menu-toggle>
-              <ion-button (click)="go('my-lists')">Home</ion-button>
+              <ion-button (click)="go('my-lists')">My lists</ion-button>
             </ion-menu-toggle>
           </ion-item>
           <ion-item>
@@ -28,12 +28,11 @@
       </ion-menu>
       <ion-header>
         <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-menu-button></ion-menu-button>
-            </ion-buttons>
-          <ion-item>
-            <ion-title>SharedShopping</ion-title>
-          </ion-item>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-title>{{header}}</ion-title>
+          <ion-toggle *ngIf="router.url.startsWith('/my-lists/')" (click)="toggle()" slot="end" style="margin-right: 3%;">Show cost</ion-toggle>
         </ion-toolbar>
       </ion-header>
       <ion-content id="content" >
