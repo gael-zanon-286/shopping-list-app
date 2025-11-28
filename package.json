@@ -23,7 +23,6 @@
     "@aws-amplify/ui-angular": "^5.1.6",
     "@aws-sdk/client-cognito-identity-provider": "^3.940.0",
     "@aws-sdk/client-lambda": "^3.940.0",
-    "@aws-sdk/types": "3.936.0",
     "@ionic/angular": "^8.7.10",
     "amazon-cognito-identity-js": "^6.3.16",
     "aws-amplify": "^6.6.6",
