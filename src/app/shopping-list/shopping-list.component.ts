@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { generateClient } from 'aws-amplify/data';
@@ -8,14 +9,25 @@ import { IonModal, ModalController } from '@ionic/angular';
 import { AddFriendModal } from './add-friend/add-friend-modal.component';
 import { ShoppingListService } from '../services/shopping-list.service';
 //import { MaskitoOptions, MaskitoElementPredicate, maskitoTransform } from '@maskito/core';
+=======
+import { Component, OnInit } from '@angular/core';
+import { NgForOf } from '@angular/common';
+import { generateClient } from 'aws-amplify/data';
+import type { Schema } from '../../../amplify/data/resource';
+import { getCurrentUser } from 'aws-amplify/auth';
+
+>>>>>>> parent of b3da35a (feat: implemented navigation, item creation and improved UI)
 
 const client = generateClient<Schema>();
 
 @Component({
   selector: 'app-shopping-list',
+  standalone: true,
+  imports: [NgForOf],
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss'],
+  styleUrl: './shopping-list.component.css'
 })
+<<<<<<< HEAD
 export class ShoppingListComponent  implements OnInit {
   private shoppingListService: ShoppingListService
   @ViewChild(IonModal) modal!: IonModal;
@@ -49,24 +61,62 @@ export class ShoppingListComponent  implements OnInit {
     await this.fetchList();
 
     this.loading = false;
+=======
+export class ShoppingListComponent {
+  shoppingLists: any[] = [];
+
+  ngOnInit() {
+    this.fetchLists();
+>>>>>>> parent of b3da35a (feat: implemented navigation, item creation and improved UI)
   }
 
-  async fetchList() {
+  fetchLists() {
+      try {
+        client.models.ShoppingList.observeQuery().subscribe({
+          next: ({ items, isSynced }) => {
+            this.shoppingLists = items;
+          },
+        });
+      } catch (error) {
+        console.error('error fetching items', error);
+      }
+    }
+
+ async addList(listName: string) {
     try {
+<<<<<<< HEAD
       const response = await client.models.ShoppingList.get({ id: this.listId! });
       this.shoppingList = response.data;
       this.headerService.sendMessage(this.shoppingList!.name);
       await this.fetchItems();
+=======
+      const list = await client.models.ShoppingList.create({
+        date: new Date().toISOString(),
+        name: listName
+      },
+      {
+        authMode: 'userPool',
+      });
+
+      await console.log('Created', list.data?.name);
+
+      await this.fetchLists();
+
+>>>>>>> parent of b3da35a (feat: implemented navigation, item creation and improved UI)
     } catch (error) {
-      console.error('error fetching items', error);
+      console.error('error creating item', error);
     }
   }
 
-  async fetchItems() {
-    const { data } = await this.shoppingList!.items();
-    this.items = data;
-  }
+  async deleteList(list: any) {
+    const itemToBeDeleted = {
+      id: list.id
+    }
+    try {
+      const deletedList = await client.models.ShoppingList.delete(itemToBeDeleted);
+      console.log('Deleting ' + deletedList.data?.name);
 
+<<<<<<< HEAD
   async createItem() {
     const { data: item } = await client.models.Item.create({
       name: this.newItemName,
@@ -86,6 +136,12 @@ export class ShoppingListComponent  implements OnInit {
     console.log('Deleting ' + deletedItem.data?.name);
 
     await this.fetchItems();
+=======
+      await this.fetchLists();
+    } catch (error) {
+      console.error('error creating item', error);
+    }
+>>>>>>> parent of b3da35a (feat: implemented navigation, item creation and improved UI)
   }
 
   async updateItem(item: Schema['Item']['type']) {

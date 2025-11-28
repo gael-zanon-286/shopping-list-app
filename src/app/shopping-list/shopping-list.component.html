@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <div *ngIf="!loading">
   <ion-button id="popover-button">Options</ion-button>
@@ -32,3 +33,14 @@
     </ion-item>
   </ion-list>
 </div>
+=======
+<main>
+  <h1>My Lists</h1>
+  <button (click)="addList('MyList')">+</button>
+  <ul>
+    <li *ngFor="let list of shoppingLists;" (click)="deleteList(list)">
+      Id: {{ list.id }} Name: {{ list.name }} Date: {{list.date}}
+    </li>
+  </ul>
+</main>
+>>>>>>> parent of b3da35a (feat: implemented navigation, item creation and improved UI)
