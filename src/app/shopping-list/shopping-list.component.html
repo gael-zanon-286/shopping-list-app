@@ -1,19 +1,9 @@
 
 <div *ngIf="!loading">
-  <ion-button id="popover-button">Options</ion-button>
-
-  <ion-popover trigger="popover-button" [dismissOnSelect]="true">
-    <ng-template>
-      <ion-content>
-        <ion-list class="def-list">
-          <ion-item [button]="true" [detail]="false" (click)="deleteCompleted()">Delete striked</ion-item>
-          <ion-item [button]="true" [detail]="false" (click)="openModal()">Add Friends</ion-item>
-        </ion-list>
-      </ion-content>
-    </ng-template>
-  </ion-popover>
 
   <ion-list class="def-list">
+
+    <ion-button (click)="deleteCompleted()">Delete striked</ion-button>
       <!-- Compatibility?? -->
       <ion-input style="--background: transparent; opacity: 95%; --placeholder-opacity: 0.4;" [(ngModel)]="newItemName" type="text" placeholder="New item" fill="solid">
         <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>

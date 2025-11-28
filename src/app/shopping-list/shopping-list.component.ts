@@ -1,12 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { generateClient } from 'aws-amplify/data';
 import { Schema } from '../../../amplify/data/resource';
 import { add, close } from 'ionicons/icons';
 import { HeaderService } from '../header/header.service';
-import { IonModal, ModalController } from '@ionic/angular';
-import { AddFriendModal } from './add-friend/add-friend-modal.component';
-import { ShoppingListService } from '../services/shopping-list.service';
 //import { MaskitoOptions, MaskitoElementPredicate, maskitoTransform } from '@maskito/core';
 
 const client = generateClient<Schema>();
@@ -17,8 +14,6 @@ const client = generateClient<Schema>();
   styleUrls: ['./shopping-list.component.scss'],
 })
 export class ShoppingListComponent  implements OnInit {
-  private shoppingListService: ShoppingListService
-  @ViewChild(IonModal) modal!: IonModal;
   listId: string = '';
   loading = true;
   items: Schema['Item']['type'][] = [];
@@ -27,18 +22,12 @@ export class ShoppingListComponent  implements OnInit {
   newItemName: string = '';
   close = close;
   showPrice: any;
-  message = 'Add Friends to the shopping list.';
   @Output() headerEvent = new EventEmitter<string>();
-    customActionSheetOptions = {
-    header: 'Options',
-  };
 /*   readonly priceMask: MaskitoOptions = {
     mask: [/\d/, '€']
   }; */
 
-  constructor(private route: ActivatedRoute, private headerService: HeaderService, private modalCtrl: ModalController,) {
-    this.shoppingListService = new ShoppingListService('eu-west-3', 'invite-user');
-  }
+  constructor(private route: ActivatedRoute, private headerService: HeaderService) { }
 
   async ngOnInit() {
     this.headerService.costToggle$.subscribe(value => {
@@ -92,7 +81,7 @@ export class ShoppingListComponent  implements OnInit {
     const itemToBeUpdated = {
       id: item.id,
       isStriked: !item.isStriked,
-      cost: item.cost,
+      cost: item.cost
     }
     const updatedItem = await client.models.Item.update(itemToBeUpdated);
     console.log('Updating ' + updatedItem.data?.name);
@@ -110,37 +99,4 @@ export class ShoppingListComponent  implements OnInit {
 
     await this.fetchItems();
   }
-
-  async updateList(newOwner: string) {
-    const newOwnerId = await this.shoppingListService.getUserIdByEmail(newOwner);
-
-    if (!newOwnerId) {
-      console.error("No user found for email:", newOwner);
-      return;
-    }
-
-    if (!this.shoppingList!.users!.includes(newOwner)) {
-      this.shoppingList!.users!.push(newOwner);
-    }
-    const listToBeUpdated = {
-      id: this.listId,
-      users: this.shoppingList?.users
-    }
-    const updatedList = await client.models.ShoppingList.update(listToBeUpdated);
-    console.log(updatedList.data);
-  }
-
-  async openModal() {
-    const modal = await this.modalCtrl.create({
-      component: AddFriendModal,
-    });
-    modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-
-    if (role === 'confirm') {
-      this.updateList(data);
-    }
-  }
-
 }

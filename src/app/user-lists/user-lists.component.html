@@ -1,4 +1,4 @@
-<main *ngIf="!loading">
+<main>
   <ion-card>
     <form onSubmit="addList(listName)">
       <ion-input [(ngModel)]="newListName" type="text" name="newListName" placeholder="New list" fill="solid" style=" --placeholder-opacity: 0.9;">
@@ -9,17 +9,28 @@
   <ion-card *ngIf="shoppingLists.length > 0">
     <ul>
       <li *ngFor="let list of shoppingLists;">
+        <ion-grid>
           <ion-row>
             <ion-col>
-              <h3 (click)="go(list.id)">{{ list.name }}</h3>
+              <ion-button href="my-lists/{{list.id}}">
+              <h3>
+                {{ list.name }}
+              </h3>
+              </ion-button>
             </ion-col>
             <ion-col>
-              <h5 (click)="go(list.id)">{{parseDate(list.date)}}</h5>
-            </ion-col>
-            <ion-col style="text-align: center;align-items: center !important;">
-              <ion-icon class="trash-icon" [icon]="trashBin"  (click)="deleteList(list)"></ion-icon>
+              <h4><ion-icon class="trash-icon" [icon]="trashBin"  (click)="deleteList(list)"></ion-icon></h4>
             </ion-col>
           </ion-row>
+          <ion-row>
+            <ion-col>
+              <h6>{{ list.items.length }} Items</h6>
+            </ion-col>
+            <ion-col>
+              <h6>{{parseDate(list.date)}}</h6>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </li>
     </ul>
   </ion-card>

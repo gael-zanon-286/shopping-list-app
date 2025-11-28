@@ -76,7 +76,7 @@ body {
   }
 
   ion-app {
-    background: linear-gradient(180deg, rgb(194, 177, 81), rgb(255, 255, 255));
+    background: white;
   }
 
   --ion-background-color {

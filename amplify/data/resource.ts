@@ -9,11 +9,11 @@ specifies that any user authenticated via an API key can "create", "read",
 const schema = a.schema({
   ShoppingList: a.model({
     items: a.hasMany("Item", "listID"),
-    users: a.string().array(),
+    owner: a.string(),
     name: a.string().required(),
     date: a.datetime().required()
   }).authorization((allow) => [
-    allow.ownersDefinedIn('users')
+    allow.owner()
   ]),
 
   Item: a.model({
@@ -21,10 +21,9 @@ const schema = a.schema({
     cost: a.float(),
     isStriked: a.boolean(),
     listID: a.id(),
-    allowedUsers: a.string().array(),
     shoppingList: a.belongsTo("ShoppingList", "listID")
   }).authorization((allow) => [
-    allow.ownersDefinedIn('allowedUsers')
+    allow.owner()
   ]),
 });
 
