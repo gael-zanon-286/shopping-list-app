@@ -4,9 +4,9 @@ import outputs from '../../amplify_outputs.json';
 import { AuthenticatorService } from '@aws-amplify/ui-angular';
 import { Data, Router } from '@angular/router';
 import { HeaderService } from './header/header.service';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 
 Amplify.configure(outputs);
-
 
 @Component({
   selector: 'app-root',
@@ -14,9 +14,19 @@ Amplify.configure(outputs);
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  title = 'amplify-angular-template';
+  public formFields = {
+    signUp: {
+      preferred_username: {
+        order: 1,
+        label: 'Preferred Username',
+        placeholder: 'Enter your preferred username'
+      }
+    }
+  }
   header: any;
   priceToggle: any;
+  user: any;
+  displayName: any;
 
   constructor(public authenticator: AuthenticatorService, public router: Router, private headerService: HeaderService) {
     Amplify.configure(outputs);
@@ -29,6 +39,11 @@ export class AppComponent implements OnInit {
     this.headerService.message$.subscribe(value => {
       this.header = value;
     });
+    fetchUserAttributes().then(user => {
+      this.user = user;
+      this.displayName = user.preferred_username;
+    });
+
   }
 
   go(url: string) {
