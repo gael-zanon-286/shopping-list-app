@@ -1,24 +1,12 @@
 
 <div *ngIf="!loading">
-
-  <ion-list class="def-list">
-
-    <ion-button (click)="deleteCompleted()">Delete striked</ion-button>
-      <!-- Compatibility?? -->
-      <ion-input style="--background: transparent; opacity: 95%; --placeholder-opacity: 0.4;" [(ngModel)]="newItemName" type="text" placeholder="New item" fill="solid">
-        <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>
-      </ion-input>
-
-    <ion-item *ngFor="let item of items" lines="full" [ngClass]="{'strikethrough' : item.isStriked}" class='text-md'>
-      <div slot="start" (click)="updateItem(item)">
-        {{ item.name }}
-      </div>
-      <div *ngIf="showPrice" slot="end">
-        <ion-input [(ngModel)]="item.cost" type="decimal" name="cost" placeholder="0"></ion-input>
-      </div>
-      <div slot="end">
-        <h4 slot="end"><ion-icon class="trash-icon" [icon]="close" (click)="deleteItem(item)"></ion-icon></h4>
-      </div>
-    </ion-item>
-  </ion-list>
+<ion-title>
+  {{ shoppingList?.name }}
+</ion-title>
+<ion-button (click)="createItem()"></ion-button>
+<ion-list>
+  <ion-item *ngFor="let item of items">
+    {{ item.name }}
+  </ion-item>
+</ion-list>
 </div>

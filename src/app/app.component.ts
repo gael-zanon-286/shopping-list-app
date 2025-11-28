@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Amplify } from 'aws-amplify';
 import outputs from '../../amplify_outputs.json';
 import { AuthenticatorService } from '@aws-amplify/ui-angular';
-import { Data, Router } from '@angular/router';
-import { HeaderService } from './header/header.service';
+import { Router } from '@angular/router';
 
 Amplify.configure(outputs);
 
@@ -13,32 +12,14 @@ Amplify.configure(outputs);
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'amplify-angular-template';
-  header: any;
-  priceToggle: any;
 
-  constructor(public authenticator: AuthenticatorService, public router: Router, private headerService: HeaderService) {
+  constructor(public authenticator: AuthenticatorService, private router: Router) {
     Amplify.configure(outputs);
-  }
-  ngOnInit(): void {
-    if (this.priceToggle == undefined) {
-      this.header = 'My Lists';
-      this.priceToggle = false;
-    }
-    this.headerService.message$.subscribe(value => {
-      this.header = value;
-    });
   }
 
   go(url: string) {
     this.router.navigateByUrl(url);
-    this.header = 'My Lists';
-  }
-
-  toggle() {
-    this.priceToggle = !this.priceToggle;
-    this.headerService.sendToggle(this.priceToggle);
   }
 }
-

@@ -1,10 +1,12 @@
 <main>
   <ion-card>
-    <form onSubmit="addList(listName)">
-      <ion-input [(ngModel)]="newListName" type="text" name="newListName" placeholder="New list" fill="solid" style=" --placeholder-opacity: 0.9;">
-        <ion-icon slot="end" class="add-icon" [icon]="addCircleOutline"  (click)="addList()"></ion-icon>
-      </ion-input>
-    </form>
+    <ion-title class="card-title">My Lists</ion-title>
+      <form onSubmit="addList(listName)">
+        <ion-item lines="none">
+          <ion-input [(ngModel)]="newListName" type="text" name="newListName" placeholder="Input list name" fill="outline"/>
+          <ion-icon class="add-icon" [icon]="addCircleOutline"  (click)="addList()"></ion-icon>
+        </ion-item>
+      </form>
   </ion-card>
   <ion-card *ngIf="shoppingLists.length > 0">
     <ul>

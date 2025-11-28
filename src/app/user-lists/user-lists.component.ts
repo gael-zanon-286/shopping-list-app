@@ -56,7 +56,7 @@ export class UserListsComponent implements OnInit {
 
   //TODO Router??
 
-  async deleteList(list: Schema['ShoppingList']['type']) {
+  async deleteList(list: any) {
     const itemToBeDeleted = {
       id: list.id
     }
