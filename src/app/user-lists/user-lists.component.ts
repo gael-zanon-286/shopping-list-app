@@ -4,6 +4,7 @@ import type { Schema } from '../../../amplify/data/resource';
 import { trashBin, addCircleOutline } from "ionicons/icons";
 import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import { Router } from '@angular/router';
+import Auth from 'aws-amplify/auth'
 
 
 
