@@ -1,6 +1,5 @@
 body {
     margin: 0;
-    background-color: wheat;
     background: linear-gradient(180deg, rgb(194, 177, 81), rgb(255, 255, 255));
     display: flex;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -16,16 +15,6 @@ body {
     align-items: stretch;
   }
 
-  ion-content {
-    height: 90vh;
-    align-content: center
-  }
-
-  ion-card {
-    width: 90vw;
-    padding: 3vw;
-  }
-
   button {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -33,7 +22,7 @@ body {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #202020;
+    background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
     color: white;
@@ -73,35 +62,4 @@ body {
   a {
     font-weight: 800;
     text-decoration: none;
-  }
-
-  ion-app {
-    background: white;
-  }
-
-  --ion-background-color {
-    background: wheat;
-  }
-
-  ion-card {
-    background:rgb(201, 166, 62);
-    border: 1px solid rgb(110, 53, 6);
-  }
-
-  .card-title {
-    color: rgb(77, 33, 5);
-  }
-
-  ion-item {
-    --background: transparent;
-  }
-
-  .trash-icon {
-    color: red;
-    font-size: 25px;
-  }
-
-  .add-icon {
-    color: rgb(32, 155, 59);
-    font-size: 50px;
   }

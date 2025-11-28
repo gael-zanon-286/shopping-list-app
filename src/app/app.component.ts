@@ -1,25 +1,23 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Amplify } from 'aws-amplify';
 import outputs from '../../amplify_outputs.json';
-import { AuthenticatorService } from '@aws-amplify/ui-angular';
-import { Router } from '@angular/router';
+import { AmplifyAuthenticatorModule, AuthenticatorService } from '@aws-amplify/ui-angular';
+import { ShoppingListComponent } from "./shopping-list/shopping-list.component";
 
 Amplify.configure(outputs);
 
-
 @Component({
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  imports: [RouterOutlet, ShoppingListComponent, AmplifyAuthenticatorModule, ShoppingListComponent],
 })
 export class AppComponent {
   title = 'amplify-angular-template';
 
-  constructor(public authenticator: AuthenticatorService, private router: Router) {
+  constructor(public authenticator: AuthenticatorService) {
     Amplify.configure(outputs);
-  }
-
-  go(url: string) {
-    this.router.navigateByUrl(url);
   }
 }

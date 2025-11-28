@@ -1,54 +1,68 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { NgForOf } from '@angular/common';
 import { generateClient } from 'aws-amplify/data';
-import { Schema } from '../../../amplify/data/resource';
+import type { Schema } from '../../../amplify/data/resource';
+import { getCurrentUser } from 'aws-amplify/auth';
+
 
 const client = generateClient<Schema>();
 
 @Component({
   selector: 'app-shopping-list',
+  standalone: true,
+  imports: [NgForOf],
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss'],
+  styleUrl: './shopping-list.component.css'
 })
-export class ShoppingListComponent  implements OnInit {
-  listId: string = '';
-  loading = true;
-  items: Schema['Item']['type'][] = [];
-  shoppingList!: Schema['ShoppingList']['type'] | null;
+export class ShoppingListComponent {
+  shoppingLists: any[] = [];
 
-  constructor(private route: ActivatedRoute) { }
-
-  async ngOnInit() {
-    this.listId = this.route.snapshot.paramMap.get('id')!;
-
-    await this.fetchList();
-
-    this.loading = false;
+  ngOnInit() {
+    this.fetchLists();
   }
 
-  async fetchList() {
+  fetchLists() {
+      try {
+        client.models.ShoppingList.observeQuery().subscribe({
+          next: ({ items, isSynced }) => {
+            this.shoppingLists = items;
+          },
+        });
+      } catch (error) {
+        console.error('error fetching items', error);
+      }
+    }
+
+ async addList(listName: string) {
     try {
-      const response = await client.models.ShoppingList.get({ id: this.listId! });
-      this.shoppingList = response.data;
-      await this.fetchItems();
+      const list = await client.models.ShoppingList.create({
+        date: new Date().toISOString(),
+        name: listName
+      },
+      {
+        authMode: 'userPool',
+      });
+
+      await console.log('Created', list.data?.name);
+
+      await this.fetchLists();
+
     } catch (error) {
-      console.error('error fetching items', error);
+      console.error('error creating item', error);
     }
   }
 
-  async fetchItems() {
-    const { data } = await this.shoppingList!.items();
-    this.items = data;
-  }
+  async deleteList(list: any) {
+    const itemToBeDeleted = {
+      id: list.id
+    }
+    try {
+      const deletedList = await client.models.ShoppingList.delete(itemToBeDeleted);
+      console.log('Deleting ' + deletedList.data?.name);
 
-  async createItem() {
-    const { data: item } = await client.models.Item.create({
-      name: 'test',
-      listID: this.listId
-    });
-
-    await console.log('Created', item?.name);
-
-    await this.fetchItems();
+      await this.fetchLists();
+    } catch (error) {
+      console.error('error creating item', error);
+    }
   }
 }
