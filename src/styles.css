@@ -97,11 +97,38 @@ body {
   }
 
   .trash-icon {
-    color: red;
+    color: rgb(163, 7, 7);
     font-size: 25px;
   }
 
   .add-icon {
     color: rgb(32, 155, 59);
-    font-size: 50px;
+    font-size: 25px;
+  }
+
+  .def-list {
+    background:rgb(201, 166, 62);
+    border: 1px solid rgb(110, 53, 6);
+  }
+
+  ion-input {
+    --background: wheat;
+  }
+
+  .strikethrough {
+      position: relative;
+    }
+
+  .strikethrough::after {
+    content: "";
+    position: absolute;
+    width: 85%;
+    height: 2px;
+    top: 50%;
+    left: 3%;
+    background: rgb(0, 0, 0);
+  }
+
+  .text-md {
+    font-size: 20px;
   }

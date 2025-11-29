@@ -7,7 +7,7 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+/*@import "@ionic/angular/css/palettes/dark.system.css";*/
 
 :root {
   --ion-background-color: linear-gradient(180deg, rgb(194, 177, 81), rgb(255, 255, 255));
