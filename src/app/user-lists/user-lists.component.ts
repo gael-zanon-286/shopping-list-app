@@ -5,8 +5,6 @@ import { trashBin, addCircleOutline } from "ionicons/icons";
 import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import { Router } from '@angular/router';
 
-
-
 const client = generateClient<Schema>();
 
 @Component({
