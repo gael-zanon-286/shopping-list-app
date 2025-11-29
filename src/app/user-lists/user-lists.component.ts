@@ -58,8 +58,6 @@ export class UserListsComponent implements OnInit {
         authMode: 'userPool',
       });
 
-      console.log(list);
-
       this.fetchLists();
 
     } catch (error) {
