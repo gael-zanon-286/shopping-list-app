@@ -14,7 +14,8 @@ const client = generateClient<Schema>();
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss'],
+  standalone: false,
+  styleUrls: ['./../../styles.css'],
 })
 export class ShoppingListComponent  implements OnInit {
   private shoppingListService: ShoppingListService

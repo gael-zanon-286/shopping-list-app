@@ -4,7 +4,6 @@ import type { Schema } from '../../../amplify/data/resource';
 import { trashBin, addCircleOutline } from "ionicons/icons";
 import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import { Router } from '@angular/router';
-import Auth from 'aws-amplify/auth'
 
 
 
@@ -13,7 +12,8 @@ const client = generateClient<Schema>();
 @Component({
   selector: 'app-user-lists',
   templateUrl: './user-lists.component.html',
-  styleUrls: ['./user-lists.component.css'],
+  standalone: false,
+  styleUrls: ['./../../styles.css'],
 })
 export class UserListsComponent implements OnInit {
   shoppingLists: any[] = [];

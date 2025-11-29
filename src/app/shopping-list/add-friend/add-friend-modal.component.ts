@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
 
 @Component({
   selector: 'app-add-friend-modal',
   templateUrl: 'add-friend-modal.component.html',
+  standalone: false
 })
 export class AddFriendModal {
   name!: string;
