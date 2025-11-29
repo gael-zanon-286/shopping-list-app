@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../../amplify/data/resource';
 import { trashBin, addCircleOutline } from "ionicons/icons";
+import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
+import { Router } from '@angular/router';
+import Auth from 'aws-amplify/auth'
+
 
 
 const client = generateClient<Schema>();
@@ -16,38 +20,49 @@ export class UserListsComponent implements OnInit {
   newListName: string = '';
   trashBin = trashBin;
   addCircleOutline = addCircleOutline;
+  loading: boolean = true;
 
-  ngOnInit() {
-    this.fetchLists();
+  constructor(private router: Router) {}
+
+  async ngOnInit() {
+    await this.fetchLists();
+    this.loading = false;
   }
 
-    fetchLists() {
-      try {
-        client.models.ShoppingList.observeQuery().subscribe({
-          next: ({ items, isSynced }) => {
-            this.shoppingLists = items;
-            //console.log(this.shoppingLists);
-          },
-        });
-      } catch (error) {
-        console.error('error fetching items', error);
-      }
+  async fetchLists() {
+    try {
+      client.models.ShoppingList.observeQuery().subscribe({
+        next: ({ items, isSynced }) => {
+          this.shoppingLists = items;
+          //console.log(this.shoppingLists);
+        },
+      });
+    } catch (error) {
+      console.error('error fetching items', error);
     }
+  }
 
- async addList() {
-  console.log(this.newListName);
+  async getUser(): Promise<string> {
+    const user = await fetchUserAttributes();
+    return user['custom:DisplayName']!;
+  }
+
+
+  async addList() {
+    const user = getCurrentUser();
     try {
       const list = await client.models.ShoppingList.create({
         date: new Date().toISOString(),
-        name: this.newListName
+        name: this.newListName,
+        users: [(await user).userId]
       },
       {
         authMode: 'userPool',
       });
 
-      await console.log('Created', list.data?.name);
+      console.log(list);
 
-      await this.fetchLists();
+      this.fetchLists();
 
     } catch (error) {
       console.error('error creating item', error);
@@ -74,5 +89,9 @@ export class UserListsComponent implements OnInit {
     const date = new Date(isoDate);
     const formatedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     return formatedDate;
+  }
+
+  go(url: string) {
+    this.router.navigateByUrl('my-lists/' + url)
   }
 }
