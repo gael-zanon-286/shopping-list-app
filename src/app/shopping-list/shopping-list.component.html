@@ -1,34 +1,34 @@
 
 <div *ngIf="!loading">
-  <ion-button id="popover-button">Options</ion-button>
+  <ion-button id="popover-button">{{ 'options' | translate }}</ion-button>
 
   <ion-popover trigger="popover-button" [dismissOnSelect]="true">
     <ng-template>
       <ion-content>
-        <ion-list class="def-list">
+        <ion-list class="popover">
           <ion-item [button]="true" [detail]="false" (click)="deleteCompleted()">Delete striked</ion-item>
-          <ion-item [button]="true" [detail]="false" (click)="openModal()">Add Friends</ion-item>
+          <ion-item [button]="true" [detail]="false" (click)="openModal()">Add user to list</ion-item>
         </ion-list>
       </ion-content>
     </ng-template>
   </ion-popover>
 
   <ion-list class="def-list">
+
       <!-- Compatibility?? -->
-      <ion-input style="--background: transparent; opacity: 95%; --placeholder-opacity: 0.4;" [(ngModel)]="newItemName" type="text" placeholder="New item" fill="solid">
+      <ion-input style="--background: transparent; opacity: 95%; --placeholder-opacity: 0.4; --padding-start: 15px; --padding-end: 15px;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
         <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>
       </ion-input>
-
-    <ion-item *ngFor="let item of items" lines="full" [ngClass]="{'strikethrough' : item.isStriked}" class='text-md'>
-      <div slot="start" (click)="updateItem(item)">
-        {{ item.name }}
-      </div>
-      <div *ngIf="showPrice" slot="end">
-        <ion-input [(ngModel)]="item.cost" type="decimal" name="cost" placeholder="0"></ion-input>
-      </div>
-      <div slot="end">
-        <h4 slot="end"><ion-icon class="trash-icon" [icon]="close" (click)="deleteItem(item)"></ion-icon></h4>
-      </div>
-    </ion-item>
+      <ion-item *ngFor="let item of items" lines="full" [ngClass]="{'strikethrough' : item.isStriked}" class='text-md'>
+        <div slot="start" (click)="updateItem(item)">
+          {{ item.name }}
+        </div>
+        <div *ngIf="showPrice" slot="end">
+          <ion-input [(ngModel)]="item.cost" type="decimal" name="cost" placeholder="0"></ion-input>
+        </div>
+        <div slot="end">
+          <h4 slot="end"><ion-icon class="trash-icon" [icon]="close" (click)="deleteItem(item)"></ion-icon></h4>
+        </div>
+      </ion-item>
   </ion-list>
 </div>

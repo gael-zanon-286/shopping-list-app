@@ -1,40 +1,67 @@
-<ion-app>
+
   <amplify-authenticator [formFields]="formFields">
     <ng-template amplifySlot="authenticated" let-user="user" let-signOut="signOut">
-      <ion-menu content-id="content">
+      <ion-app>
+
+        <ion-menu content-id="content">
+
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>
+                <ion-label>{{ 'menu.welcome' | translate }}</ion-label> {{ displayName }}!
+              </ion-title>
+            </ion-toolbar>
+          </ion-header>
+
+          <ion-content>
+            <ion-list>
+
+              <ion-menu-toggle>
+                <ion-item class="popover" translate (click)="go('my-lists')"><b>{{ 'menu.myLists' | translate }}</b></ion-item>
+              </ion-menu-toggle>
+
+
+              <ion-item class="popover" (click)="changeLanguage('')" id="nested-trigger"><b>{{ 'menu.languages' | translate }}</b></ion-item>
+
+              <ion-popover trigger="nested-trigger" [dismissOnSelect]="true" side="end">
+                <ng-template>
+                  <ion-content>
+                    <ion-list class="popover">
+                      <ion-menu-toggle>
+                        <ion-item [button]="true" (click)="changeLanguage('es')">{{ 'menu.spanish' | translate }}</ion-item>
+                      </ion-menu-toggle>
+                      <ion-menu-toggle>
+                        <ion-item [button]="true" (click)="changeLanguage('en')">{{ 'menu.english' | translate }}</ion-item>
+                      </ion-menu-toggle>
+                    </ion-list>
+                  </ion-content>
+                </ng-template>
+              </ion-popover>
+
+              <ion-menu-toggle>
+                <ion-item class="popover" (click)="signOut()"><b>{{ 'menu.signOut' | translate }}</b></ion-item>
+              </ion-menu-toggle>
+
+            </ion-list>
+
+          </ion-content>
+
+        </ion-menu>
+
         <ion-header>
           <ion-toolbar>
-            <ion-title>
-              Welcome, {{ displayName }}!
-            </ion-title>
+            <ion-buttons slot="start">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <ion-title>{{header}}</ion-title>
+            <ion-toggle *ngIf="router.url.startsWith('/my-lists/')" (click)="toggle()" slot="end" style="margin-right: 3%;">{{ 'showCost' | translate }}</ion-toggle>
           </ion-toolbar>
         </ion-header>
-        <ion-content>
-          <ion-item>
-            <ion-menu-toggle>
-              <ion-button (click)="go('my-lists')">My lists</ion-button>
-            </ion-menu-toggle>
-          </ion-item>
-          <ion-item>
-            <ion-menu-toggle>
-              <ion-button (click)="signOut()">Sign Out</ion-button>
-            </ion-menu-toggle>
-          </ion-item>
+        <ion-content id="content" >
+          <ion-router-outlet></ion-router-outlet>
         </ion-content>
-      </ion-menu>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-          </ion-buttons>
-          <ion-title>{{header}}</ion-title>
-          <ion-toggle *ngIf="router.url.startsWith('/my-lists/')" (click)="toggle()" slot="end" style="margin-right: 3%;">Show cost</ion-toggle>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content id="content" >
-        <ion-router-outlet></ion-router-outlet>
-      </ion-content>
+      </ion-app>
     </ng-template>
   </amplify-authenticator>
-</ion-app>
+
 

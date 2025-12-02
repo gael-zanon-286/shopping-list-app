@@ -1,26 +1,29 @@
-<main *ngIf="!loading">
+<div *ngIf="!loading">
+  <ion-row>
   <ion-card>
     <form onSubmit="addList(listName)">
-      <ion-input [(ngModel)]="newListName" type="text" name="newListName" placeholder="New list" fill="solid" style=" --placeholder-opacity: 0.9;">
-        <ion-icon slot="end" class="add-icon" [icon]="addCircleOutline"  (click)="addList()"></ion-icon>
+      <ion-input i18n [(ngModel)]="newListName" type="text" name="newListName" [placeholder]="'lists.newList' | translate" fill="solid" style="--placeholder-opacity: 0.9; --padding-start: 15px; --padding-end: 15px; --background: wheat;">
+        <ion-icon slot="end" class="add-icon" [icon]="addCircleOutline" (click)="addList()"></ion-icon>
       </ion-input>
     </form>
   </ion-card>
+  </ion-row>
+  <ion-row>
   <ion-card *ngIf="shoppingLists.length > 0">
-    <ul>
-      <li *ngFor="let list of shoppingLists;">
-          <ion-row>
-            <ion-col>
-              <h3 (click)="go(list.id)">{{ list.name }}</h3>
-            </ion-col>
-            <ion-col>
-              <h5 (click)="go(list.id)">{{parseDate(list.date)}}</h5>
-            </ion-col>
-            <ion-col style="text-align: center;align-items: center !important;">
-              <ion-icon class="trash-icon" [icon]="trashBin"  (click)="deleteList(list)"></ion-icon>
-            </ion-col>
-          </ion-row>
-      </li>
-    </ul>
+    <ion-list class="shopping-lists">
+      <ion-row class="list-row"></ion-row>
+      <ion-row class="list-row" *ngFor="let list of shoppingLists;">
+        <ion-col size="7" (click)="go(list.id)">
+          <h3 style="color: rgb(32, 20, 20);"><b>{{ list.name }}</b></h3>
+        </ion-col>
+        <ion-col size="3" (click)="go(list.id)" style="justify-content: flex-end;">
+          <h5 style="color: rgb(174, 174, 174); font-size: 16px;">{{parseDate(list.date)}}</h5>
+        </ion-col>
+        <ion-col class="icon-col" size="2">
+          <ion-icon class="trash-icon" [icon]="trashBin"  (click)="deleteList(list)"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-list>
   </ion-card>
-</main>
+  </ion-row>
+</div>

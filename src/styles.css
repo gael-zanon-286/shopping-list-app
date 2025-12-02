@@ -21,11 +21,6 @@ body {
     align-content: center
   }
 
-  ion-card {
-    width: 90vw;
-    padding: 3vw;
-  }
-
   button {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -86,6 +81,9 @@ body {
   ion-card {
     background:rgb(201, 166, 62);
     border: 1px solid rgb(110, 53, 6);
+    width: 94vw;
+    align-items: center;
+    padding: 3vw;
   }
 
   .card-title {
@@ -111,10 +109,6 @@ body {
     border: 1px solid rgb(110, 53, 6);
   }
 
-  ion-input {
-    --background: wheat;
-  }
-
   .strikethrough {
       position: relative;
     }
@@ -132,3 +126,32 @@ body {
   .text-md {
     font-size: 20px;
   }
+
+  .list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: solid 1px rgb(130, 130, 130);
+    padding: 0 10px 0 10px;
+  }
+
+  .icon-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .shopping-lists {
+    background: white;
+    border-radius: 10px;
+  }
+
+  ion-col {
+    padding: 0px;
+  }
+
+  .popover {
+     background: rgb(247, 237, 220);
+  }
+
+

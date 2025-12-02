@@ -1,0 +1,18 @@
+{
+  "menu": {
+    "myLists": "My Lists",
+    "spanish": "Spanish",
+    "english": "English",
+    "languages": "Languages",
+    "signOut": "Sign Out",
+    "welcome": "Welcome"
+  },
+  "lists": {
+    "newList": "New List"
+  },
+  "items": {
+    "newItem": "New Item"
+  },
+  "options": "Options",
+  "showCost": "Show cost"
+}
