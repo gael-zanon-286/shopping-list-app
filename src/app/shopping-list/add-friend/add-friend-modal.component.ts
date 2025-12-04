@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
   standalone: false
 })
 export class AddFriendModal {
-  name!: string;
+  name: string | undefined;
 
   constructor(private modalCtrl: ModalController) {}
 

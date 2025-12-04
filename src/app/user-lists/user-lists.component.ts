@@ -4,6 +4,8 @@ import type { Schema } from '../../../amplify/data/resource';
 import { trashBin, addCircleOutline } from "ionicons/icons";
 import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import { Router } from '@angular/router';
+import { DateService } from '../services/date.service';
+import { ListService } from '../services/list.service';
 
 const client = generateClient<Schema>();
 
@@ -20,24 +22,11 @@ export class UserListsComponent implements OnInit {
   addCircleOutline = addCircleOutline;
   loading: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public dateService: DateService, private listService: ListService) {}
 
   async ngOnInit() {
-    await this.fetchLists();
+    this.shoppingLists = await this.listService.fetchLists('ACTIVE');
     this.loading = false;
-  }
-
-  async fetchLists() {
-    try {
-      client.models.ShoppingList.observeQuery().subscribe({
-        next: ({ items, isSynced }) => {
-          this.shoppingLists = items;
-          //console.log(this.shoppingLists);
-        },
-      });
-    } catch (error) {
-      console.error('error fetching items', error);
-    }
   }
 
   async getUser(): Promise<string> {
@@ -45,47 +34,17 @@ export class UserListsComponent implements OnInit {
     return user['custom:DisplayName']!;
   }
 
-
   async addList() {
-    const user = getCurrentUser();
-    try {
-      const list = await client.models.ShoppingList.create({
-        date: new Date().toISOString(),
-        name: this.newListName,
-        users: [(await user).userId]
-      },
-      {
-        authMode: 'userPool',
-      });
-
-      this.fetchLists();
-
-    } catch (error) {
-      console.error('error creating item', error);
-    }
+    await this.listService.addList(this.newListName);
+    this.shoppingLists = await this.listService.fetchLists('ACTIVE');
   }
 
   async deleteList(list: Schema['ShoppingList']['type']) {
-    const itemToBeDeleted = {
-      id: list.id
-    }
-    try {
-      const deletedList = await client.models.ShoppingList.delete(itemToBeDeleted);
-      console.log('Deleting ' + deletedList.data?.name);
-
-      await this.fetchLists();
-    } catch (error) {
-      console.error('error creating item', error);
-    }
-  }
-
-  parseDate(isoDate: string) {
-    const date = new Date(isoDate);
-    const formatedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-    return formatedDate;
+    await this.listService.deleteList(list);
+    this.shoppingLists = await this.listService.fetchLists('ACTIVE');
   }
 
   go(url: string) {
-    this.router.navigateByUrl('my-lists/' + url)
+    this.router.navigateByUrl('my-lists/' + url);
   }
 }

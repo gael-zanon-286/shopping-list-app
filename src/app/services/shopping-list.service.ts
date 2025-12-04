@@ -1,10 +1,13 @@
+import { Inject, Injectable } from "@angular/core";
 import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
+import { LAMBDA_FUNCTION_NAME, LAMBDA_REGION } from "../app.module";
 
+@Injectable({ providedIn: 'root' })
 export class ShoppingListService {
   private lambdaClient: LambdaClient;
   private functionName: string;
 
-  constructor(region: string, functionName: string) {
+  constructor(@Inject(LAMBDA_REGION) region: string, @Inject(LAMBDA_FUNCTION_NAME) functionName: string) {
     this.lambdaClient = new LambdaClient({ region });
     this.functionName = functionName;
   }

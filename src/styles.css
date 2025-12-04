@@ -104,9 +104,21 @@ body {
     font-size: 25px;
   }
 
+  .options-icon {
+    font-size: 25px;
+    color: rgb(71, 59, 6);
+    margin-top: 10px;
+    margin-right: 10px;
+    background-color: transparent;
+  }
+
   .def-list {
     background:rgb(201, 166, 62);
     border: 1px solid rgb(110, 53, 6);
+  }
+
+  .def-list-no-border {
+    background:rgb(201, 166, 62);
   }
 
   .strikethrough {
@@ -135,6 +147,13 @@ body {
     padding: 0 10px 0 10px;
   }
 
+  .list-row-no-border {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px 0 10px;
+  }
+
   .icon-col {
     display: flex;
     justify-content: flex-end;
@@ -152,6 +171,27 @@ body {
 
   .popover {
      background: rgb(247, 237, 220);
+  }
+
+  ion-modal {
+    --height: 25%;
+    --border-radius: 16px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    --backdrop-background: rgba(0, 0, 0, 0.6) !important;
+    --width: 80%;
+  }
+
+  ion-modal::part(backdrop) {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  ion-modal ion-toolbar {
+    --background: wheat;
+    --color: rgb(77, 33, 5);
+  }
+
+  .sm {
+  --min-height: 40px;
   }
 
 

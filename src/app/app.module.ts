@@ -7,14 +7,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { provideTranslateService, TranslateModule } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideHttpClient } from '@angular/common/http';
-import { ShoppingListModule } from './shopping-list/shopping-list.module';
-import { UserListsModule } from './user-lists/user-lists.module';
+import { LAMBDA_FUNCTION_NAME, LAMBDA_REGION } from '../tokens';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    FormsModule,
     AmplifyAuthenticatorModule,
     AppRoutingModule,
     TranslateModule.forRoot({
@@ -22,6 +23,8 @@ import { UserListsModule } from './user-lists/user-lists.module';
     })
   ],
   providers: [
+    { provide: LAMBDA_REGION, useValue: 'eu-west-3' },
+    { provide: LAMBDA_FUNCTION_NAME, useValue: 'invite-user' },
     provideHttpClient(),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
@@ -35,3 +38,5 @@ import { UserListsModule } from './user-lists/user-lists.module';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+export { LAMBDA_REGION, LAMBDA_FUNCTION_NAME };
+

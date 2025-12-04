@@ -1,15 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { generateClient } from 'aws-amplify/data';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Schema } from '../../../amplify/data/resource';
 import { add, close } from 'ionicons/icons';
-import { HeaderService } from '../header/header.service';
+import { HeaderService } from '../services/header.service';
 import { IonModal, ModalController } from '@ionic/angular';
 import { AddFriendModal } from './add-friend/add-friend-modal.component';
-import { ShoppingListService } from '../services/shopping-list.service';
+import { ListService } from '../services/list.service';
+import { ItemService } from '../services/item.service';
 //import { MaskitoOptions, MaskitoElementPredicate, maskitoTransform } from '@maskito/core';
-
-const client = generateClient<Schema>();
 
 @Component({
   selector: 'app-shopping-list',
@@ -18,7 +16,6 @@ const client = generateClient<Schema>();
   styleUrls: ['./../../styles.css'],
 })
 export class ShoppingListComponent  implements OnInit {
-  private shoppingListService: ShoppingListService
   @ViewChild(IonModal) modal!: IonModal;
   listId: string = '';
   loading = true;
@@ -37,13 +34,15 @@ export class ShoppingListComponent  implements OnInit {
     mask: [/\d/, '€']
   }; */
 
-  constructor(private route: ActivatedRoute, private headerService: HeaderService, private modalCtrl: ModalController,) {
-    this.shoppingListService = new ShoppingListService('eu-west-3', 'invite-user');
+  constructor(private router: Router, private route: ActivatedRoute, private headerService: HeaderService, private modalCtrl: ModalController, private listService: ListService, private itemService: ItemService) {
   }
 
   async ngOnInit() {
-    this.headerService.costToggle$.subscribe(value => {
-      this.showPrice = value;
+    this.headerService.deleteStriked$.subscribe(() => {
+      this.deleteStriked();
+    });
+    this.headerService.addFriend$.subscribe(() => {
+      this.openModal();
     });
     this.listId = this.route.snapshot.paramMap.get('id')!;
 
@@ -52,85 +51,58 @@ export class ShoppingListComponent  implements OnInit {
     this.loading = false;
   }
 
+  // Obtain list data
   async fetchList() {
-    try {
-      const response = await client.models.ShoppingList.get({ id: this.listId! });
-      this.shoppingList = response.data;
-      this.headerService.sendMessage(this.shoppingList!.name);
-      await this.fetchItems();
-    } catch (error) {
-      console.error('error fetching items', error);
+    this.shoppingList = await this.listService.fetchList(this.listId);
+    if (this.shoppingList) {
+    this.headerService.sendMessage(this.shoppingList.name);
     }
+    this.fetchItems();
   }
 
+  // Obtain all items in list
   async fetchItems() {
-    const { data } = await this.shoppingList!.items();
-    this.items = data;
+    this.items = await this.itemService.fetchItems(this.shoppingList!);
   }
 
+  // Create item
   async createItem() {
-    const { data: item } = await client.models.Item.create({
-      name: this.newItemName,
-      listID: this.listId
-    });
-    console.log('Created', item?.name);
-
-    await this.fetchItems();
+    await this.itemService.createItem(this.newItemName, this.listId);
+    this.fetchItems();
     this.newItemName = '';
   }
 
+  // Delete item
   async deleteItem(item: Schema['Item']['type']) {
-    const itemToBeDeleted = {
-      id: item.id
-    }
-    const deletedItem = await client.models.Item.delete(itemToBeDeleted);
-    console.log('Deleting ' + deletedItem.data?.name);
+    await this.itemService.deleteItem(item);
 
-    await this.fetchItems();
+    this.fetchItems();
   }
 
+  // Modify item
   async updateItem(item: Schema['Item']['type']) {
-    const itemToBeUpdated = {
-      id: item.id,
-      isStriked: !item.isStriked,
-      cost: item.cost,
-    }
-    const updatedItem = await client.models.Item.update(itemToBeUpdated);
-    console.log('Updating ' + updatedItem.data?.name);
+    await this.itemService.strikeItem(item);
 
-    await this.fetchItems();
+    this.fetchItems();
   }
 
-  async deleteCompleted() {
-    console.log(this.items)
+  // Remove strike items from list and create new historic with said items
+  async deleteStriked() {
+    const newList = await this.listService.createHistoricList(this.shoppingList!, this.items!);
     for (let item of this.items) {
       if (item.isStriked) {
         this.deleteItem(item);
       }
     }
-
-    await this.fetchItems();
+    this.router.navigateByUrl('historic-lists/' + newList?.id);
   }
 
+  // Add user to allowed list of users on list
   async updateList(newOwner: string) {
-    const newOwnerId = await this.shoppingListService.getUserIdByEmail(newOwner);
-
-    if (!newOwnerId) {
-      console.error("No user found for email:", newOwner);
-      return;
-    }
-
-    if (!this.shoppingList!.users!.includes(newOwner)) {
-      this.shoppingList!.users!.push(newOwner);
-    }
-    const listToBeUpdated = {
-      id: this.listId,
-      users: this.shoppingList?.users
-    }
-    const updatedList = await client.models.ShoppingList.update(listToBeUpdated);
-    console.log(updatedList.data);
+    this.listService.updateListUsers(newOwner, this.shoppingList!)
   }
 
+  // Modal to add new user to list
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: AddFriendModal,

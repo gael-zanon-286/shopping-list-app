@@ -3,9 +3,13 @@ import { Amplify } from 'aws-amplify';
 import outputs from '../../amplify_outputs.json';
 import { AuthenticatorService } from '@aws-amplify/ui-angular';
 import { Router } from '@angular/router';
-import { HeaderService } from './header/header.service';
+import { HeaderService } from './services/header.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { TranslateService } from "@ngx-translate/core";
+import { settings } from 'ionicons/icons';
+import { ListStoreService } from './services/list-store.service';
+import { ListService } from './services/list.service';
+import { Schema } from 'inspector/promises';
 
 Amplify.configure(outputs);
 
@@ -24,12 +28,13 @@ export class AppComponent implements OnInit {
       }
     }
   }
+  options = settings;
   header: any;
   priceToggle: any;
   user: any;
   displayName: any;
 
-  constructor(private translate: TranslateService, public authenticator: AuthenticatorService, public router: Router, private headerService: HeaderService) {
+  constructor(private translate: TranslateService, public authenticator: AuthenticatorService, public router: Router, private headerService: HeaderService, private storeService: ListStoreService, private listService: ListService) {
     Amplify.configure(outputs);
   }
   ngOnInit() {
@@ -70,6 +75,24 @@ export class AppComponent implements OnInit {
     } else {
         this.translate.use('en');
     }
+  }
+
+  async deleteList() {
+    const list = this.storeService.list;
+    if (list) {
+      await this.listService.deleteList(list);
+    }
+    this.storeService.list = null;
+    await this.router.navigateByUrl('historic-lists');
+  }
+
+
+  addFriend() {
+    this.headerService.addFriend()
+  }
+
+  deleteStriked() {
+    this.headerService.deleteStriked();
   }
 }
 

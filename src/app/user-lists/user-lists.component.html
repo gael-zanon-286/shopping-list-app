@@ -17,7 +17,7 @@
           <h3 style="color: rgb(32, 20, 20);"><b>{{ list.name }}</b></h3>
         </ion-col>
         <ion-col size="3" (click)="go(list.id)" style="justify-content: flex-end;">
-          <h5 style="color: rgb(174, 174, 174); font-size: 16px;">{{parseDate(list.date)}}</h5>
+          <h5 style="color: rgb(174, 174, 174); font-size: 16px;">{{dateService.parseDate(list.date)}}</h5>
         </ion-col>
         <ion-col class="icon-col" size="2">
           <ion-icon class="trash-icon" [icon]="trashBin"  (click)="deleteList(list)"></ion-icon>

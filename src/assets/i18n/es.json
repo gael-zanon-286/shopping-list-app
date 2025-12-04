@@ -5,7 +5,8 @@
     "english": "Inglés",
     "languages": "Idiomas",
     "signOut": "Cerrar Sesión",
-    "welcome": "Bienvenido"
+    "welcome": "Bienvenido",
+    "historicLists": "Historial"
   },
   "lists": {
     "newList": "Nueva Lista"

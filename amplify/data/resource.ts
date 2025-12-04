@@ -8,14 +8,15 @@ specifies that any user authenticated via an API key can "create", "read",
 =========================================================================*/
 const schema = a.schema({
   ShoppingList: a.model({
+    type: a.enum(['ACTIVE', 'HISTORIC']),
     items: a.hasMany("Item", "listID"),
     users: a.string().array(),
     name: a.string().required(),
+    totalCost: a.float(),
     date: a.datetime().required()
   }).authorization((allow) => [
     allow.ownersDefinedIn('users')
   ]),
-
   Item: a.model({
     name: a.string().required(),
     cost: a.float(),
@@ -25,7 +26,7 @@ const schema = a.schema({
     shoppingList: a.belongsTo("ShoppingList", "listID")
   }).authorization((allow) => [
     allow.ownersDefinedIn('allowedUsers')
-  ]),
+  ])
 });
 
 export type Schema = ClientSchema<typeof schema>;

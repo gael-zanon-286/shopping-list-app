@@ -1,0 +1,24 @@
+<div *ngIf="!loading">
+  <ion-row>
+    <ion-card *ngIf="historicLists.length > 0">
+      <ion-list class="shopping-lists">
+        <ion-row class="list-row"></ion-row>
+        <div *ngFor="let list of historicLists;">
+          <ion-row class="list-row-no-border">
+            <ion-col (click)="go(list.id)">
+              <h3 style="color: rgb(32, 20, 20); margin-bottom: 0px;"><b>{{dateService.parseTime(list.date)}}</b></h3>
+            </ion-col>
+            <ion-col (click)="go(list.id)">
+              <h3 style="color: rgb(32, 20, 20); margin-bottom: 0px;"><b>{{dateService.parseDate(list.date)}}</b></h3>
+            </ion-col>
+          </ion-row>
+          <ion-row class="list-row">
+            <ion-col (click)="go(list.id)">
+              <p style="color: rgb(148, 145, 145); margin-top: 3px; font-size: 10px;">{{ list.name }}</p>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-list>
+    </ion-card>
+  </ion-row>
+</div>
