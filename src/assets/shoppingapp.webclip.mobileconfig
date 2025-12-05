@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>FullScreen</key>
+            <true/>
+            <key>Icon</key>
+            <data>
+            AAABAAMAEBAAAAEAIABoBAAANgAAACAgAAABACAAqBAAAJ4EAAAwMAAAAQAgAKgAAACc
+            BMABAAAAEAYAAHggAAABABAAqAgAAK4DAAAOBAAACEgAAHggAAABAAsAKgQAAK4FAAAS
+            GAAAHwgAAABAAgApAAAANgQAACBkAAABABYALggAAIoAAAD/AAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAED/
+            wAAQ/8AAEP/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAABXv4wHV7+MB1e/jAdXv4wHV7+MB1e/jAdXv4wHV7+M
+            B1e/jAdXv4wHV7+MB1e/jAdXv4wHV7+MB1e/jAdXv4wHV7+MB1e/jAdXv4wHV7+MByy8
+            ...
+            (Base64 continues)
+            ...
+            MuuTdHMsT/SzrQx09C3ItXUvRXc3MYJ
+            </data>
+            <key>IsRemovable</key>
+            <true/>
+            <key>Label</key>
+            <string>ShoppingApp</string>
+            <key>PayloadDescription</key>
+            <string>WebClip for ShoppingApp</string>
+            <key>PayloadDisplayName</key>
+            <string>ShoppingApp</string>
+            <key>PayloadIdentifier</key>
+            <string>com.shoppingapp.webclip</string>
+            <key>PayloadOrganization</key>
+            <string>ShoppingApp</string>
+            <key>PayloadType</key>
+            <string>com.apple.webClip.managed</string>
+            <key>PayloadUUID</key>
+            <string>c0a8011c-381a-4e94-9f62-f47bd592f311</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>Precomposed</key>
+            <true/>
+            <key>URL</key>
+            <string>https://main.d2j0njwutaslac.amplifyapp.com/</string>
+        </dict>
+    </array>
+    <key>PayloadDisplayName</key>
+    <string>ShoppingApp WebClip</string>
+    <key>PayloadIdentifier</key>
+    <string>com.shoppingapp.webclip.profile</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>bc4f53e6-f3f7-4474-8e17-310f63abd00e</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>
