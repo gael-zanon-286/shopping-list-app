@@ -29,21 +29,25 @@ export class UserListsComponent implements OnInit {
     this.loading = false;
   }
 
+  // Obtain current user
   async getUser(): Promise<string> {
     const user = await fetchUserAttributes();
     return user['custom:DisplayName']!;
   }
 
+  // Create new list
   async addList() {
     await this.listService.addList(this.newListName);
     this.shoppingLists = await this.listService.fetchLists('ACTIVE');
   }
 
+  // Delete list
   async deleteList(list: Schema['ShoppingList']['type']) {
     await this.listService.deleteList(list);
     this.shoppingLists = await this.listService.fetchLists('ACTIVE');
   }
 
+  // Navigate to selected list
   go(url: string) {
     this.router.navigateByUrl('my-lists/' + url);
   }

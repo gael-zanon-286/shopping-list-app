@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Schema } from '../../../../amplify/data/resource';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HeaderService } from '../../services/header.service';
 import { generateClient } from 'aws-amplify/data';
 import { add, close } from 'ionicons/icons';
@@ -25,11 +25,6 @@ export class HistoricListItemsComponent  implements OnInit {
   close = close;
   editMode: boolean = false;
   totalCost: number | undefined;
-  message = 'Add Friends to the shopping list.';
-  @Output() headerEvent = new EventEmitter<string>();
-    customActionSheetOptions = {
-    header: 'Options',
-  };
 /*   readonly priceMask: MaskitoOptions = {
     mask: [/\d/, '€']
   }; */
@@ -42,9 +37,7 @@ export class HistoricListItemsComponent  implements OnInit {
 
     await this.fetchList();
     this.storeService.list = this.shoppingList;
-    if (this.shoppingList?.totalCost) {
-      this.totalCost = this.shoppingList?.totalCost;
-    }
+    this.totalCost = this.shoppingList!.totalCost!;
 
     this.loading = false;
   }
@@ -94,7 +87,6 @@ export class HistoricListItemsComponent  implements OnInit {
   async updateItem(item: Schema['Item']['type']) {
     const itemToBeUpdated = {
       id: item.id,
-      isStriked: !item.isStriked,
       cost: item.cost,
     }
     const updatedItem = await client.models.Item.update(itemToBeUpdated);
@@ -104,6 +96,7 @@ export class HistoricListItemsComponent  implements OnInit {
   }
 
   async updateList() {
+    this.editMode = false;
     for (let item of this.items) {
       await this.itemService.updateItemCost(item);
     }

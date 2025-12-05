@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Schema } from '../../../amplify/data/resource';
 import { add, close } from 'ionicons/icons';
@@ -7,7 +7,6 @@ import { IonModal, ModalController } from '@ionic/angular';
 import { AddFriendModal } from './add-friend/add-friend-modal.component';
 import { ListService } from '../services/list.service';
 import { ItemService } from '../services/item.service';
-//import { MaskitoOptions, MaskitoElementPredicate, maskitoTransform } from '@maskito/core';
 
 @Component({
   selector: 'app-shopping-list',
@@ -24,26 +23,21 @@ export class ShoppingListComponent  implements OnInit {
   add = add;
   newItemName: string = '';
   close = close;
-  showPrice: any;
-  message = 'Add Friends to the shopping list.';
-  @Output() headerEvent = new EventEmitter<string>();
-    customActionSheetOptions = {
-    header: 'Options',
-  };
-/*   readonly priceMask: MaskitoOptions = {
-    mask: [/\d/, '€']
-  }; */
 
   constructor(private router: Router, private route: ActivatedRoute, private headerService: HeaderService, private modalCtrl: ModalController, private listService: ListService, private itemService: ItemService) {
   }
 
   async ngOnInit() {
+    // Set up listener for menu options
     this.headerService.deleteStriked$.subscribe(() => {
       this.deleteStriked();
     });
+
+    // Set up listener for menu options
     this.headerService.addFriend$.subscribe(() => {
       this.openModal();
     });
+
     this.listId = this.route.snapshot.paramMap.get('id')!;
 
     await this.fetchList();
@@ -55,7 +49,7 @@ export class ShoppingListComponent  implements OnInit {
   async fetchList() {
     this.shoppingList = await this.listService.fetchList(this.listId);
     if (this.shoppingList) {
-    this.headerService.sendMessage(this.shoppingList.name);
+      this.headerService.sendMessage(this.shoppingList.name);
     }
     this.fetchItems();
   }
@@ -67,7 +61,7 @@ export class ShoppingListComponent  implements OnInit {
 
   // Create item
   async createItem() {
-    await this.itemService.createItem(this.newItemName, this.listId);
+    await this.itemService.createItem(this.newItemName, this.shoppingList!);
     this.fetchItems();
     this.newItemName = '';
   }

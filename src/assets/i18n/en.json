@@ -14,6 +14,35 @@
   "items": {
     "newItem": "New Item"
   },
+  "historic": {
+    "editMode": "Edit Mode",
+    "save": "Save",
+    "showCost": "Show cost",
+    "totalCost": "Total cost",
+    "creationDate": "Creation date",
+    "total": "Total"
+  },
+  "addUserModal": {
+    "title": "Add user to list",
+    "name": "Name",
+    "confirm": "Confirm"
+  },
   "options": "Options",
-  "showCost": "Show cost"
+  "deleteList": "Delete List",
+  "deleteStriked": "Delete Striked",
+  "addUser": "Add User to List",
+  "auth": {
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "create": "Create Account",
+    "signIn": "Sign In",
+    "usernamePlaceholder": "Enter your username",
+    "emailPlaceholder": "Enter your Email",
+    "passwordPlaceholder": "Enter your Password",
+    "confirmPasswordPlaceholder": "Please confirm your Password",
+    "forgotPassword": "Forgot your password?"
+  }
+
 }

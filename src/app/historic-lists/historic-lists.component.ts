@@ -35,7 +35,7 @@ export class HistoricListsComponent  implements OnInit {
   }
 
   go(url: string) {
-    this.router.navigateByUrl('historic-lists/' + url)
+    this.router.navigateByUrl('historic-lists/' + url);
   }
 
 }

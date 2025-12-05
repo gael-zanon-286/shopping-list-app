@@ -11,11 +11,13 @@ export class ItemService {
   }
 
   // Create item
-  async createItem(newName: string, listId: string): Promise<Schema['Item']['type'] | undefined> {
+  async createItem(newName: string, list: Schema['ShoppingList']['type']): Promise<Schema['Item']['type'] | undefined> {
     try {
       const { data: item } = await this.client.models.Item.create({
         name: newName,
-        listID: listId
+        listID: list.id,
+        allowedUsers: list.users,
+        cost: 0
       });
       return item ?? undefined;
     } catch (error) {
@@ -65,6 +67,25 @@ export class ItemService {
         id: item.id,
         cost: item.cost
       }
+      const updatedItem = await this.client.models.Item.update(itemToBeUpdated);
+      return updatedItem.data ?? undefined;
+    } catch (error) {
+      console.error('Failed to update item:', error);
+      return undefined;
+    }
+  }
+
+  // Add User ownership
+  async updateItemOwnership(item: Schema['Item']['type'], userId: string): Promise<Schema['Item']['type'] | undefined> {
+
+    item.allowedUsers!.push(userId);
+
+    try {
+      const itemToBeUpdated = {
+        id: item.id,
+        allowedUsers: item.allowedUsers
+      }
+
       const updatedItem = await this.client.models.Item.update(itemToBeUpdated);
       return updatedItem.data ?? undefined;
     } catch (error) {

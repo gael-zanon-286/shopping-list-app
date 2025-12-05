@@ -14,6 +14,34 @@
   "items": {
     "newItem": "Nuevo Objeto"
   },
+  "historic": {
+    "editMode": "Modo edición",
+    "save": "Guardar",
+    "showCost": "Mostrar coste",
+    "totalCost": "Coste total",
+    "creationDate": "Fecha de creación",
+    "total": "Total"
+  },
+  "addUserModal": {
+    "title": "Añadir usuario a lista",
+    "name": "Nombre",
+    "confirm": "Confirmar"
+  },
   "options": "Opciones",
-  "showCost": "Mostrar costes"
+  "deleteList": "Eliminar Lista",
+  "deleteStriked": "Eliminar Tachados",
+  "addUser": "Añadir Usuario a Lista",
+  "auth": {
+    "username": "Nombre Usuario",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "create": "Crear Cuenta",
+    "signIn": "Iniciar Sesión",
+    "usernamePlaceholder": "Introduce tu Nombre de Usuario",
+    "emailPlaceholder": "Introduce tu Email",
+    "passwordPlaceholder": "Introduce tu Contraseña",
+    "confirmPasswordPlaceholder": "Por favor confirme su Contraseña",
+    "forgotPassword": "Olvidaste tu contraseña?"
+  }
 }

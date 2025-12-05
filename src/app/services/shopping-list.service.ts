@@ -1,42 +1,29 @@
 import { Inject, Injectable } from "@angular/core";
 import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import { LAMBDA_FUNCTION_NAME, LAMBDA_REGION } from "../app.module";
+import { Schema } from "../../../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
 
 @Injectable({ providedIn: 'root' })
 export class ShoppingListService {
   private lambdaClient: LambdaClient;
   private functionName: string;
+  private client;
 
   constructor(@Inject(LAMBDA_REGION) region: string, @Inject(LAMBDA_FUNCTION_NAME) functionName: string) {
     this.lambdaClient = new LambdaClient({ region });
     this.functionName = functionName;
+    this.client = generateClient<Schema>()
   }
 
-  public async getUserIdByEmail(email: string): Promise<string | null> {
-    const payload = JSON.stringify({ email });
-
-    const command = new InvokeCommand({
-      FunctionName: this.functionName,
-      Payload: Buffer.from(payload),
-    });
-
+  public async getUserIdByEmail(user: string): Promise<string | null> {
     try {
-      const response = await this.lambdaClient.send(command);
-
-      if (!response.Payload) return null;
-
-      const lambdaResult = JSON.parse(Buffer.from(response.Payload).toString());
-
-      if (lambdaResult.statusCode !== 200) {
-        console.error("Lambda error:", lambdaResult.body);
-        return null;
-      }
-
-      const body = JSON.parse(lambdaResult.body);
-
-      return body.userId || null;
-    } catch (error: any) {
-      console.error("Error calling Lambda:", error.message || error);
+      const data = await this.client.queries.inviteUser({
+        user
+      });
+      return data.data ?? null;
+    } catch (error) {
+      console.error("Error calling lambda function", error);
       return null;
     }
   }

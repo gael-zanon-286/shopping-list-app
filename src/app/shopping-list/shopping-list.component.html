@@ -7,11 +7,8 @@
         <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>
       </ion-input>
       <ion-item *ngFor="let item of items" lines="full" [ngClass]="{'strikethrough' : item.isStriked}" class='text-md'>
-        <div slot="start" (click)="updateItem(item)">
+        <div slot="start" (click)="updateItem(item)" class="wrap">
           {{ item.name }}
-        </div>
-        <div *ngIf="showPrice" slot="end">
-          <ion-input [(ngModel)]="item.cost" type="decimal" name="cost" placeholder="0"></ion-input>
         </div>
         <div slot="end">
           <h4 slot="end"><ion-icon class="trash-icon" [icon]="close" (click)="deleteItem(item)"></ion-icon></h4>

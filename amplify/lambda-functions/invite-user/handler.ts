@@ -1,52 +1,37 @@
-import type { Handler } from 'aws-lambda';
 import { CognitoIdentityProviderClient, ListUsersCommand } from "@aws-sdk/client-cognito-identity-provider";
+import { Schema } from '../../data/resource';
 
-const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
+const client = new CognitoIdentityProviderClient({ region: 'eu-west-3' });
 
-export const handler: Handler = async (event) => {
+export const handler: Schema['inviteUser']['functionHandler'] = async (event) => {
+  const user = event.arguments.user;
+  const userPoolId = 'eu-west-3_fPXLwEFs2';
+
   try {
-    const email = event.email;
-
-    const userPoolId = process.env.USER_POOL_ID;
-
     const command = new ListUsersCommand({
       UserPoolId: userPoolId,
-      Filter: `email = "${email}"`,
+      Filter: `preferred_username = "${user}"`,
       Limit: 1,
     });
 
     const response = await client.send(command);
 
     if (!response?.Users || response.Users.length === 0) {
-      return {
-          statusCode: 404,
-          body: JSON.stringify({ error: "User not found" }),
-      };
+      throw new Error("User not found");
     }
 
-      const subAttr = response.Users[0].Attributes?.find(attr => attr.Name === "sub");
+    const subAttr = response.Users[0].Attributes?.find(attr => attr.Name === "sub");
 
     if (!subAttr?.Value) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "User ID not found" }),
-      };
+      throw new Error("User ID not found");
     }
 
-    const userId = subAttr.Value;
+    return subAttr.Value;
 
-    return {
-      statusCode: 200,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ userId }),
-    };
+  } catch (err: any) {
+    console.error(err);
 
-  } catch (error: any) {
-    console.error(error);
-    return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Internal server error", details: error.message }),
-    };
+    throw new Error(err.message || "Internal server error");
   }
-
 };
+

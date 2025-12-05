@@ -2,32 +2,40 @@
 <div *ngIf="!loading">
 
   <ion-card>
-    <ion-item class="sm" lines="none"><b>Creation date: &nbsp;</b> {{dateService.parseDateTime(shoppingList!.date)}}</ion-item>
-    <ion-item class="sm" lines="none"><b>Total cost: &nbsp;</b> {{totalCost}}€</ion-item>
+    <ion-item class="sm" lines="none"><b>{{"historic.creationDate" | translate}}: &nbsp;</b> {{dateService.parseDateTime(shoppingList!.date)}}</ion-item>
+    <ion-item class="sm" lines="none"><b>{{"historic.totalCost" | translate}}: &nbsp;</b> {{totalCost}}€</ion-item>
     <ion-item class="sm" lines="none">
-      <ion-label>Edit mode</ion-label><ion-toggle [(ngModel)]="editMode"></ion-toggle><ion-button (click)="updateList()">Save</ion-button>
+      <ion-label>{{"historic.editMode" | translate}}</ion-label><ion-toggle [(ngModel)]="editMode"></ion-toggle><ion-button (click)="updateList()">{{"historic.save" | translate}}</ion-button>
     </ion-item>
   </ion-card>
   <ion-card style="padding: 0px;">
     <ion-list class="def-list-no-border">
         <!-- Compatibility?? -->
-        <ion-input *ngIf="editMode" style="--background: transparent; opacity: 95%; --placeholder-opacity: 0.4; --padding-start: 15px; --padding-end: 15px;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
+        <ion-input *ngIf="editMode" style="--background: transparent; opacity: 90%; --placeholder-opacity: 0.7; --padding-start: 15px; --padding-end: 15px;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
           <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>
         </ion-input>
-        <ion-item *ngFor="let item of items" lines="full" [ngClass]="{'strikethrough' : item.isStriked}" class='text-md'>
-          <div slot="start" (click)="updateItem(item)">
-            {{ item.name }}
-          </div>
-          <div *ngIf="editMode">
-            <ion-input style="color: rgb(112, 110, 101);" [(ngModel)]="item.cost" type="number" name="cost" placeholder="0"></ion-input>
-          </div>
-          <div *ngIf="!editMode" slot="end">
-            <ion-label style="color: rgb(112, 110, 101);" type="decimal">{{item.cost}}€</ion-label>
-          </div>
-          <div slot="end">
-            <h4 slot="end"><ion-icon class="trash-icon" [icon]="close" (click)="deleteItem(item)"></ion-icon></h4>
-          </div>
-        </ion-item>
+
+          <ion-row *ngFor="let item of items" lines="full" class='text-md list-row'>
+            <ion-col size="7" style="padding-left: 10px; color: Black;" class="vert-align">
+              <div class="wrap">
+                {{ item.name }}
+              </div>
+            </ion-col>
+            <ion-col size="3" class="vert-align">
+              <div *ngIf="editMode">
+                <ion-input style="color: rgb(112, 110, 101);" [(ngModel)]="item.cost" type="number" name="cost" placeholder="0"></ion-input>
+              </div>
+              <div *ngIf="!editMode">
+                <ion-label style="color: rgb(112, 110, 101);" type="decimal">{{item.cost}}€</ion-label>
+              </div>
+            </ion-col>
+            <ion-col size="1" class="vert-align">
+              <div>
+                <h4><ion-icon class="trash-icon" [icon]="close" (click)="deleteItem(item)"></ion-icon></h4>
+              </div>
+            </ion-col>
+          </ion-row>
+
     </ion-list>
   </ion-card>
 </div>

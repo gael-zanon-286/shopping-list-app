@@ -165,6 +165,11 @@ body {
     border-radius: 10px;
   }
 
+  .vert-align {
+    display: flex;
+    align-items: center;
+  }
+
   ion-col {
     padding: 0px;
   }
@@ -191,7 +196,17 @@ body {
   }
 
   .sm {
-  --min-height: 40px;
+    --min-height: 40px;
+  }
+
+  .wrap {
+    white-space: normal !important;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  ion-toolbar {
+    --min-height: auto;
   }
 
 

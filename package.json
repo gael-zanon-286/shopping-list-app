@@ -21,6 +21,7 @@
     "@angular/service-worker": "^17.3.0",
     "@aws-amplify/auth": "^6.17.0",
     "@aws-amplify/backend": "^1.18.0",
+    "@aws-amplify/cli": "^14.2.3",
     "@aws-amplify/ui-angular": "^5.1.6",
     "@aws-sdk/client-cognito-identity-provider": "^3.940.0",
     "@aws-sdk/client-lambda": "^3.940.0",

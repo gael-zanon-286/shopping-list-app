@@ -8,13 +8,16 @@
             <ion-col (click)="go(list.id)">
               <h3 style="color: rgb(32, 20, 20); margin-bottom: 0px;"><b>{{dateService.parseTime(list.date)}}</b></h3>
             </ion-col>
-            <ion-col (click)="go(list.id)">
+            <ion-col (click)="go(list.id)" style="justify-items: right;">
               <h3 style="color: rgb(32, 20, 20); margin-bottom: 0px;"><b>{{dateService.parseDate(list.date)}}</b></h3>
             </ion-col>
           </ion-row>
           <ion-row class="list-row">
             <ion-col (click)="go(list.id)">
               <p style="color: rgb(148, 145, 145); margin-top: 3px; font-size: 10px;">{{ list.name }}</p>
+            </ion-col>
+            <ion-col (click)="go(list.id)" style="justify-items: right;">
+              <p style="color: rgb(148, 145, 145); margin-top: 3px; font-size: 10px;">{{"historic.total" | translate}}: {{ list.totalCost }}€</p>
             </ion-col>
           </ion-row>
         </div>

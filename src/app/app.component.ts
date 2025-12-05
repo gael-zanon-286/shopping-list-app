@@ -38,10 +38,6 @@ export class AppComponent implements OnInit {
     Amplify.configure(outputs);
   }
   ngOnInit() {
-    if (this.priceToggle == undefined) {
-      this.header = this.translate.instant('menu.myLists');
-      this.priceToggle = false;
-    }
     this.headerService.message$.subscribe(value => {
       this.header = value;
     });
@@ -52,21 +48,25 @@ export class AppComponent implements OnInit {
     this.initTranslate();
   }
 
+  // Navigate to new route
   go(url: string) {
     this.router.navigateByUrl(url);
-    this.header = this.translate.instant('menu.myLists');
+
+    // Update header title
+    if (url == 'my-lists') {
+      this.header = this.translate.instant('menu.myLists');
+    } else if (url == 'historic-lists') {
+      this.header = this.translate.instant('menu.historicLists');
+    }
   }
 
-  toggle() {
-    this.priceToggle = !this.priceToggle;
-    this.headerService.sendToggle(this.priceToggle);
-  }
-
+  // Change language
   public changeLanguage(language: string) {
     this.translate.use(language);
     this.header = this.translate.instant('menu.myLists');
   }
 
+  // Set up translation
   initTranslate() {
     this.translate.setFallbackLang('en');
 
@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // Delete list from options menu
   async deleteList() {
     const list = this.storeService.list;
     if (list) {
@@ -86,11 +87,12 @@ export class AppComponent implements OnInit {
     await this.router.navigateByUrl('historic-lists');
   }
 
-
+  // Add friend from options menu
   addFriend() {
     this.headerService.addFriend()
   }
 
+  // Delete striked on current list from options menu
   deleteStriked() {
     this.headerService.deleteStriked();
   }

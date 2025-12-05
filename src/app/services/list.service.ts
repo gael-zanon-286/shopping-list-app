@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Schema } from '../../../amplify/data/resource';
-import { DateService } from './date.service';
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { ShoppingListService } from './shopping-list.service';
+import { ItemService } from './item.service';
 
 interface newHistorical {
   list: Schema['ShoppingList']['type'],
@@ -17,7 +17,7 @@ export class ListService {
   createHistoricList$ = this.createHistoricListSource.asObservable();
   private client;
 
-  constructor(private dateService: DateService, private shoppingListService: ShoppingListService) {
+  constructor(private itemService: ItemService, private shoppingListService: ShoppingListService) {
     this.client = generateClient<Schema>();
   }
 
@@ -67,14 +67,30 @@ export class ListService {
       return;
     }
 
-    if (shoppingList.users!.includes(newOwner)) {
-      shoppingList.users!.push(newOwner);
+    if (!shoppingList.users!.includes(newOwnerId)) {
+      shoppingList.users!.push(newOwnerId);
+    } else {
+      console.log('Already exists');
     }
+
     const listToBeUpdated = {
       id: shoppingList.id,
       users: shoppingList.users
     }
-    await this.client.models.ShoppingList.update(listToBeUpdated);
+    const response = await this.client.models.ShoppingList.update(listToBeUpdated);
+
+    // Update Item ownership (Inefficient but cheaper than lambdas)
+    if (response.data) {
+      const items = await response.data.items(); {
+        for(let item of items.data) {
+          this.itemService.updateItemOwnership(item, newOwnerId)
+        }
+      }
+    }
+
+
+    this.itemService
+    return response;
   }
 
   // Modify list
@@ -119,11 +135,10 @@ export class ListService {
       type: "HISTORIC",
       date: date,
       name: list.name,
+      totalCost: 0
     },{
       authMode: "userPool"
     });
-
-    console.log(newList);
 
     if (errors) {
       console.error(errors);
