@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Amplify } from 'aws-amplify';
 import outputs from '../../amplify_outputs.json';
 import { AuthenticatorService } from '@aws-amplify/ui-angular';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { HeaderService } from './services/header.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { TranslateService } from "@ngx-translate/core";
-import { settings } from 'ionicons/icons';
+import { settings, arrowBackOutline } from 'ionicons/icons';
 import { ListStoreService } from './services/list-store.service';
 import { ListService } from './services/list.service';
 import { Schema } from 'inspector/promises';
+import { Location } from '@angular/common';
 
 Amplify.configure(outputs);
 
@@ -33,11 +34,29 @@ export class AppComponent implements OnInit {
   priceToggle: any;
   user: any;
   displayName: any;
+  arrowBackOutline = arrowBackOutline;
+  showMenuButton: boolean = true;
 
-  constructor(private translate: TranslateService, public authenticator: AuthenticatorService, public router: Router, private headerService: HeaderService, private storeService: ListStoreService, private listService: ListService) {
+  constructor(
+    private translate: TranslateService,
+    public authenticator: AuthenticatorService,
+    public router: Router,
+    private headerService: HeaderService,
+    private storeService: ListStoreService,
+    private listService: ListService,
+    private location: Location) {
     Amplify.configure(outputs);
   }
   ngOnInit() {
+    // Switch between menu button or back button
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const menuRoutes = ['/my-lists', '/historic-lists'];
+        this.showMenuButton = menuRoutes.includes(event.urlAfterRedirects);
+      }
+    });
+
+    // Update header title by route
     this.headerService.message$.subscribe(value => {
       this.header = value;
     });
@@ -51,13 +70,7 @@ export class AppComponent implements OnInit {
   // Navigate to new route
   go(url: string) {
     this.router.navigateByUrl(url);
-
-    // Update header title
-    if (url == 'my-lists') {
-      this.header = this.translate.instant('menu.myLists');
-    } else if (url == 'historic-lists') {
-      this.header = this.translate.instant('menu.historicLists');
-    }
+    this.updateTitle(url);
   }
 
   // Change language
@@ -95,6 +108,20 @@ export class AppComponent implements OnInit {
   // Delete striked on current list from options menu
   deleteStriked() {
     this.headerService.deleteStriked();
+  }
+
+  goBack() {
+    this.location.back();
+    this.updateTitle(this.router.url.split('/')[1]);
+  }
+
+  // Update header title
+  updateTitle(url: string) {
+    if (url == 'my-lists') {
+      this.header = this.translate.instant('menu.myLists');
+    } else if (url == 'historic-lists') {
+      this.header = this.translate.instant('menu.historicLists');
+    }
   }
 }
 

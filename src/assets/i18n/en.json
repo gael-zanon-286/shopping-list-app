@@ -27,10 +27,15 @@
     "name": "Name",
     "confirm": "Confirm"
   },
+  "Confirmation": "Confirmation",
+  "yes": "Yes",
+  "no": "No",
   "options": "Options",
   "deleteList": "Delete List",
   "deleteStriked": "Delete Striked",
   "addUser": "Add User to List",
+  "confirmDeletion": "Do you want to move the scratched items into a ticket?",
+  "confirmNavigation": "Show new ticket",
   "auth": {
     "username": "Username",
     "email": "Email",

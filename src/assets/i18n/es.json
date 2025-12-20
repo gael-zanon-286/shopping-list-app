@@ -12,7 +12,7 @@
     "newList": "Nueva Lista"
   },
   "items": {
-    "newItem": "Nuevo Objeto"
+    "newItem": "Nuevo Producto"
   },
   "historic": {
     "editMode": "Modo edición",
@@ -27,10 +27,15 @@
     "name": "Nombre",
     "confirm": "Confirmar"
   },
+  "Confirmation": "Confirmación",
+  "yes": "Sí",
+  "no": "No",
   "options": "Opciones",
   "deleteList": "Eliminar Lista",
   "deleteStriked": "Eliminar Tachados",
   "addUser": "Añadir Usuario a Lista",
+  "confirmDeletion": "Desea mover los productos tachados a un ticket?",
+  "confirmNavigation": "Mostrar nuevo ticket",
   "auth": {
     "username": "Nombre Usuario",
     "email": "Email",

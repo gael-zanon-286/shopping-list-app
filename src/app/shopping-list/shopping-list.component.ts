@@ -3,10 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Schema } from '../../../amplify/data/resource';
 import { add, close } from 'ionicons/icons';
 import { HeaderService } from '../services/header.service';
-import { IonModal, ModalController } from '@ionic/angular';
+import { IonModal, ModalController, AlertController } from '@ionic/angular';
 import { AddFriendModal } from './add-friend/add-friend-modal.component';
+import { TranslateService } from "@ngx-translate/core";
 import { ListService } from '../services/list.service';
 import { ItemService } from '../services/item.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import type { OverlayEventDetail } from '@ionic/core';
 
 @Component({
   selector: 'app-shopping-list',
@@ -15,6 +19,7 @@ import { ItemService } from '../services/item.service';
   styleUrls: ['./../../styles.css'],
 })
 export class ShoppingListComponent  implements OnInit {
+  private destroy$ = new Subject<void>();
   @ViewChild(IonModal) modal!: IonModal;
   listId: string = '';
   loading = true;
@@ -24,17 +29,25 @@ export class ShoppingListComponent  implements OnInit {
   newItemName: string = '';
   close = close;
 
-  constructor(private router: Router, private route: ActivatedRoute, private headerService: HeaderService, private modalCtrl: ModalController, private listService: ListService, private itemService: ItemService) {
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private route: ActivatedRoute,
+    private headerService: HeaderService,
+    private modalCtrl: ModalController,
+    private listService: ListService,
+    private translate: TranslateService,
+    private itemService: ItemService) {
   }
 
   async ngOnInit() {
     // Set up listener for menu options
-    this.headerService.deleteStriked$.subscribe(() => {
-      this.deleteStriked();
+    this.headerService.deleteStriked$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.confirmationAlert();
     });
 
     // Set up listener for menu options
-    this.headerService.addFriend$.subscribe(() => {
+    this.headerService.addFriend$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.openModal();
     });
 
@@ -43,6 +56,12 @@ export class ShoppingListComponent  implements OnInit {
     await this.fetchList();
 
     this.loading = false;
+  }
+
+  // Unsubscribe from header service
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Obtain list data
@@ -81,14 +100,16 @@ export class ShoppingListComponent  implements OnInit {
   }
 
   // Remove strike items from list and create new historic with said items
-  async deleteStriked() {
+  async deleteStriked(data: any) {
     const newList = await this.listService.createHistoricList(this.shoppingList!, this.items!);
     for (let item of this.items) {
       if (item.isStriked) {
         this.deleteItem(item);
       }
     }
-    this.router.navigateByUrl('historic-lists/' + newList?.id);
+    if (data.includes('navigate')) {
+      this.router.navigateByUrl('historic-lists/' + newList?.id);
+    }
   }
 
   // Add user to allowed list of users on list
@@ -110,4 +131,33 @@ export class ShoppingListComponent  implements OnInit {
     }
   }
 
+  async confirmationAlert() {
+    const alert = await this.alertController.create({
+     header: this.translate.instant('confirmation'),
+     message: this.translate.instant('confirmDeletion'),
+     inputs: [
+       {
+         name: 'navigate',
+         type: 'checkbox',
+         label: this.translate.instant('confirmNavigation'),
+         value: 'navigate'
+       }
+     ],
+     buttons: [
+       {
+         text: this.translate.instant('no'),
+         role: 'cancel',
+       },
+       {
+         text: this.translate.instant('yes'),
+         role: 'confirm',
+         handler: (data) => {
+           this.deleteStriked(data);
+         }
+       }
+     ]
+   });
+   await alert.present();
+  }
 }
+

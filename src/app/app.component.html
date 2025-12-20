@@ -55,6 +55,9 @@
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="start">
+              <ion-button *ngIf="!showMenuButton" (click)="goBack()">
+                <ion-icon [icon]="arrowBackOutline"></ion-icon>
+              </ion-button>
               <ion-menu-button></ion-menu-button>
             </ion-buttons>
             <ion-title>
