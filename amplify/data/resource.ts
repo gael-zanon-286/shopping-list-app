@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { inviteUser } from '../lambda-functions/invite-user/resource';
+import { start } from 'repl';
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -27,6 +28,15 @@ const schema = a.schema({
     shoppingList: a.belongsTo("ShoppingList", "listID")
   }).authorization((allow) => [
     allow.ownersDefinedIn('allowedUsers')
+  ]),
+  Report: a.model({
+    name: a.string().required(),
+    categories: a.json(),
+    totalCost: a.float(),
+    startDate: a.datetime().required(),
+    endDate: a.datetime().required()
+  }).authorization((allow) => [
+    allow.owner()
   ]),
   inviteUser: a
     .query()

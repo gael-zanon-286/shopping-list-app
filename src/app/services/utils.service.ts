@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 
 @Injectable({ providedIn: 'root' })
-export class DateService {
+export class UtilsService {
 
   parseDate(isoDate: string) {
     const date = new Date(isoDate);
@@ -31,5 +31,24 @@ export class DateService {
 
   dateToIso(date: Date): string {
     return date ? date.toISOString().split('T')[0] : '';
+  }
+
+  parseCategories(report: any) {
+    let categories: any[] = [];
+    if (!report) {
+      return;
+    }
+    try {
+      categories = Array.isArray(report.categories)
+        ? report.categories
+        : JSON.parse(report.categories || '[]');
+    } catch (e) {
+      categories = [];
+    }
+
+    const unc = categories.find((c: any) => c.name === 'Uncategorized');
+    const items = unc?.items ?? [];
+
+    return { categories, items };
   }
 }

@@ -121,6 +121,7 @@ export class ShoppingListComponent  implements OnInit {
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: AddFriendModal,
+      cssClass: 'add-friend-modal'
     });
     modal.present();
 
@@ -131,6 +132,7 @@ export class ShoppingListComponent  implements OnInit {
     }
   }
 
+  // Deletion confirmation dialog
   async confirmationAlert() {
     const alert = await this.alertController.create({
      header: this.translate.instant('confirmation'),

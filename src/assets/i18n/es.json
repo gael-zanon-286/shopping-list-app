@@ -6,10 +6,21 @@
     "languages": "Idiomas",
     "signOut": "Cerrar Sesión",
     "welcome": "Bienvenido",
-    "historicLists": "Historial"
+    "historicLists": "Historial",
+    "reports": "Informes",
+    "myReports": "Mis Informes"
   },
   "lists": {
     "newList": "Nueva Lista"
+  },
+  "reports": {
+    "newReport": "Nuevo Informe",
+    "name": "Nombre",
+    "header": "Crear nuevo informe",
+    "description": "Selecciona el periodo del cual deseas extraer información",
+    "startDate": "Fecha de Inicio",
+    "endDate": "Fecha de Fin",
+    "deleteConfirmation": "¿Estás seguro de que deseas eliminar este informe?"
   },
   "items": {
     "newItem": "Nuevo Producto"
@@ -28,13 +39,16 @@
     "confirm": "Confirmar"
   },
   "Confirmation": "Confirmación",
+  "confirm": "Confirmar",
+  "uncategorized": "Sin categorizar",
   "yes": "Sí",
   "no": "No",
   "options": "Opciones",
   "deleteList": "Eliminar Lista",
   "deleteStriked": "Eliminar Tachados",
   "addUser": "Añadir Usuario a Lista",
-  "confirmDeletion": "Desea mover los productos tachados a un ticket?",
+  "confirmDeletion": "¿Desea mover los productos tachados a un ticket?",
+  "confirmListDeletion": "¿Desea eliminar esta lista?",
   "confirmNavigation": "Mostrar nuevo ticket",
   "auth": {
     "username": "Nombre Usuario",

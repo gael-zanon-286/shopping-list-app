@@ -18,6 +18,10 @@ const appRoutes: Routes = [
   {
     path: 'historic-lists',
     loadChildren: () => import('./historic-lists/historic-lists.module').then(m => m.HistoricListsModule)
+  },
+  {
+    path: 'report-list',
+    loadChildren: () => import('./report-list/report-list.module').then(m => m.ReportListModule)
   }
 
 ];

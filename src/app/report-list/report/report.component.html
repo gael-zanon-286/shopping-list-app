@@ -1,0 +1,45 @@
+
+<div *ngIf="!loading">
+  <ion-card style="padding: 0px;">
+    <ion-list class="def-list-no-border">
+      <ion-accordion-group>
+
+          <ion-accordion *ngFor="let category of categories">
+            <div slot="header">
+              <ion-row lines="full" class='text-md list-row'>
+                <ion-col size="7" style="padding-left: 10px; color: Black;" class="vert-align">
+                  <div class="wrap">{{ category.name }}</div>
+                </ion-col>
+                <ion-col size="3" class="vert-align">
+                  <div>
+                    <ion-label style="color: rgb(112, 110, 101);" type="decimal">{{category.totalCost}} €</ion-label>
+                  </div>
+                </ion-col>
+                <ion-col size="1" class="vert-align">
+                  <ion-icon [icon]="chevronDown" style="color: rgb(112,110,101); --transform: rotate(0deg);"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </div>
+
+            <div slot="content">
+              <ion-row *ngFor="let item of (category.items || [])" class="text-sm" style="padding-left: 10px;">
+                <ion-col size="7" style="padding-left: 30px; color: rgba(0,0,0,0.85);" class="vert-align">
+                  <div class="wrap">{{ item.name }}</div>
+                </ion-col>
+                <ion-col size="3" class="vert-align">
+                  <div>
+                    <ion-label style="color: rgb(112, 110, 101);">{{ item.price ?? 0 }} €</ion-label>
+                  </div>
+                </ion-col>
+                <ion-col size="1" class="vert-align">
+                  <div>
+                    <ion-icon class="move-icon" [icon]="menuOutline"></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-accordion>
+      </ion-accordion-group>
+    </ion-list>
+  </ion-card>
+</div>

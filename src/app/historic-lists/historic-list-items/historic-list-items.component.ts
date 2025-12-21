@@ -44,14 +44,9 @@ export class HistoricListItemsComponent  implements OnInit {
 
   // Obtain list data
   async fetchList() {
-    try {
-      const response = await client.models.ShoppingList.get({ id: this.listId! });
-      this.shoppingList = response.data;
+      this.shoppingList = await this.listService.fetchList(this.listId);
       this.headerService.sendMessage(this.shoppingList!.name);
       await this.fetchItems();
-    } catch (error) {
-      console.error('error fetching items', error);
-    }
   }
 
   // Obtain all items in list

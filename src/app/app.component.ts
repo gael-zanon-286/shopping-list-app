@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
     // Switch between menu button or back button
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const menuRoutes = ['/my-lists', '/historic-lists'];
+        const menuRoutes = ['/my-lists', '/historic-lists', '/report-list'];
         this.showMenuButton = menuRoutes.includes(event.urlAfterRedirects);
       }
     });
@@ -121,6 +121,8 @@ export class AppComponent implements OnInit {
       this.header = this.translate.instant('menu.myLists');
     } else if (url == 'historic-lists') {
       this.header = this.translate.instant('menu.historicLists');
+    } else if (url == 'report-list') {
+      this.header = this.translate.instant('menu.myReports');
     }
   }
 }

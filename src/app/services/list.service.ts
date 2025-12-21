@@ -115,11 +115,11 @@ export class ListService {
 
   // Delete list
   async deleteList(list: Schema['ShoppingList']['type']) {
-    const itemToBeDeleted = {
+    const listToBeDeleted = {
       id: list.id
     }
     try {
-      const deletedList = await this.client.models.ShoppingList.delete(itemToBeDeleted);
+      const deletedList = await this.client.models.ShoppingList.delete(listToBeDeleted);
       return deletedList ?? undefined;
     } catch (error) {
       console.error('error creating item', error);

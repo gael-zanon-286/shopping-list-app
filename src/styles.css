@@ -99,6 +99,11 @@ body {
     font-size: 25px;
   }
 
+  .move-icon {
+    color: rgb(96, 92, 75);
+    font-size: 25px;
+  }
+
   .add-icon {
     color: rgb(32, 155, 59);
     font-size: 25px;
@@ -178,7 +183,7 @@ body {
      background: rgb(247, 237, 220);
   }
 
-  ion-modal {
+  .add-friend-modal {
     --height: 25%;
     --border-radius: 16px;
     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
@@ -208,5 +213,14 @@ body {
   ion-toolbar {
     --min-height: auto;
   }
+
+  .create-report-modal {
+    --height: 50%;
+    --border-radius: 16px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    --backdrop-background: rgba(0, 0, 0, 0.6) !important;
+    --width: 90%;
+  }
+
 
 

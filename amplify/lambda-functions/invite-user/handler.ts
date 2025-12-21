@@ -1,11 +1,16 @@
 import { CognitoIdentityProviderClient, ListUsersCommand } from "@aws-sdk/client-cognito-identity-provider";
 import { Schema } from '../../data/resource';
 
-const client = new CognitoIdentityProviderClient({ region: 'eu-west-3' });
+const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
 
 export const handler: Schema['inviteUser']['functionHandler'] = async (event) => {
   const user = event.arguments.user;
-  const userPoolId = 'eu-west-3_fPXLwEFs2';
+  const userPoolId = process.env.USER_POOL_ID;
+
+  // Check valid user pool
+  if (!userPoolId) {
+    throw new Error("USER_POOL_ID is not defined");
+  }
 
   try {
     const command = new ListUsersCommand({
@@ -16,7 +21,8 @@ export const handler: Schema['inviteUser']['functionHandler'] = async (event) =>
 
     const response = await client.send(command);
 
-    if (!response?.Users || response.Users.length === 0) {
+    // Check if user exists
+    if (!response.Users || response.Users.length === 0) {
       throw new Error("User not found");
     }
 

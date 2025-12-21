@@ -4,8 +4,10 @@ import type { Schema } from '../../../amplify/data/resource';
 import { trashBin, addCircleOutline } from "ionicons/icons";
 import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import { Router } from '@angular/router';
+import { TranslateService } from "@ngx-translate/core";
 import { DateService } from '../services/date.service';
 import { ListService } from '../services/list.service';
+import { AlertController } from '@ionic/angular';
 
 const client = generateClient<Schema>();
 
@@ -17,12 +19,17 @@ const client = generateClient<Schema>();
 })
 export class UserListsComponent implements OnInit {
   shoppingLists: any[] = [];
-  newListName: string = '';
+  newListName: string | null = null;
   trashBin = trashBin;
   addCircleOutline = addCircleOutline;
   loading: boolean = true;
 
-  constructor(private router: Router, public dateService: DateService, private listService: ListService) {}
+  constructor(
+    private translate: TranslateService,
+    private alertController: AlertController,
+    private router: Router,
+    public dateService: DateService,
+    private listService: ListService) {}
 
   async ngOnInit() {
     this.shoppingLists = await this.listService.fetchLists('ACTIVE');
@@ -37,8 +44,14 @@ export class UserListsComponent implements OnInit {
 
   // Create new list
   async addList() {
-    await this.listService.addList(this.newListName);
-    this.shoppingLists = await this.listService.fetchLists('ACTIVE');
+    if (this.newListName) {
+      await this.listService.addList(this.newListName);
+      this.shoppingLists = await this.listService.fetchLists('ACTIVE');
+      this.newListName = null;
+    } else {
+      console.log('No name introduced');
+    }
+
   }
 
   // Delete list
@@ -50,5 +63,28 @@ export class UserListsComponent implements OnInit {
   // Navigate to selected list
   go(url: string) {
     this.router.navigateByUrl('my-lists/' + url);
+  }
+
+  // Deletion confirmation dialog
+  async confirmationAlert(list: Schema['ShoppingList']['type']) {
+    const alert = await this.alertController.create({
+     header: this.translate.instant('confirmation'),
+     subHeader: list.name,
+     message: this.translate.instant('confirmListDeletion'),
+     buttons: [
+       {
+         text: this.translate.instant('no'),
+         role: 'cancel',
+       },
+       {
+         text: this.translate.instant('yes'),
+         role: 'confirm',
+         handler: () => {
+           this.deleteList(list);
+         }
+       }
+     ]
+   });
+   await alert.present();
   }
 }

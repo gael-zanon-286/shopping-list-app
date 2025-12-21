@@ -12,10 +12,15 @@ export const backend: any = defineBackend({
 
 const inviteUserLambda = backend.inviteUser.resources.lambda;
 
+inviteUserLambda.addEnvironment(
+  "USER_POOL_ID",
+  backend.auth.resources.userPool.userPoolId
+);
+
 const statement = new iam.PolicyStatement({
   sid: "AllowListUsers",
   actions: ["cognito-idp:ListUsers"],
-  resources: ["arn:aws:cognito-idp:eu-west-3:592653933583:userpool/eu-west-3_fPXLwEFs2"],
+  resources: [backend.auth.resources.userPool.userPoolArn],
 })
 
 
