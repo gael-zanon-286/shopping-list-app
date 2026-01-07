@@ -1,6 +1,6 @@
-## AWS Amplify Angular.js Starter Template
+## Shared Shopping app
 
-This repository provides a starter template for creating applications using Angular.js and AWS Amplify, emphasizing easy setup for authentication, API, and database capabilities.
+A mobile app to create your own shopping lists.
 
 ## Overview
 
@@ -8,18 +8,12 @@ This template equips you with a foundational Angular.js application integrated w
 
 ## Features
 
-- **Authentication**: Setup with Amazon Cognito for secure user authentication.
-- **API**: Ready-to-use GraphQL endpoint with AWS AppSync.
-- **Database**: Real-time database powered by Amazon DynamoDB.
+- **Multi-user lists**: Add other users who can add items to a single list in real-time.
+- **Create tickets from a list**: Select items to remove and generate a ticket from said items, where they can be edited to add costs, creating a shopping history of each purchase.
+- **Create insights**: Create your own insights for item types through different filters (time frame, item type).
+- **Language support**: English and Spanish translation available.
 
-## Deploying to AWS
+## Installation
 
-For detailed instructions on deploying your application, refer to the [deployment section](https://docs.amplify.aws/angular/start/quickstart/#deploy-a-fullstack-app-to-aws) of our documentation.
+Not public. (PWA application) Open the link through the mobile device's browser and share to home screen.
 
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
