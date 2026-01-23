@@ -39,9 +39,14 @@ export class UtilsService {
       return;
     }
     try {
-      categories = Array.isArray(report.categories)
-        ? report.categories
-        : JSON.parse(report.categories || '[]');
+      // Handle both array and string formats
+      if (Array.isArray(report.categories)) {
+        categories = report.categories;
+      } else if (typeof report.categories === 'string') {
+        categories = JSON.parse(report.categories || '[]');
+      } else {
+        categories = [];
+      }
     } catch (e) {
       categories = [];
     }

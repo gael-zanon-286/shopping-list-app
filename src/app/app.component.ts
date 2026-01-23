@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Amplify } from 'aws-amplify';
 import outputs from '../../amplify_outputs.json';
 import { AuthenticatorService } from '@aws-amplify/ui-angular';
@@ -6,11 +6,11 @@ import { Router, NavigationEnd } from '@angular/router';
 import { HeaderService } from './services/header.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { TranslateService } from "@ngx-translate/core";
-import { settings, arrowBackOutline } from 'ionicons/icons';
+import { ellipsisHorizontal, arrowBackOutline } from 'ionicons/icons';
 import { ListStoreService } from './services/list-store.service';
 import { ListService } from './services/list.service';
-import { Schema } from 'inspector/promises';
 import { Location } from '@angular/common';
+import { ReportService } from './services/report.service';
 
 Amplify.configure(outputs);
 
@@ -29,13 +29,14 @@ export class AppComponent implements OnInit {
       }
     }
   }
-  options = settings;
+  options = ellipsisHorizontal;
   header: any;
   priceToggle: any;
   user: any;
   displayName: any;
   arrowBackOutline = arrowBackOutline;
   showMenuButton: boolean = true;
+  translationsReady: boolean = false;
 
   constructor(
     private translate: TranslateService,
@@ -44,7 +45,9 @@ export class AppComponent implements OnInit {
     private headerService: HeaderService,
     private storeService: ListStoreService,
     private listService: ListService,
-    private location: Location) {
+    private location: Location,
+    private cdr: ChangeDetectorRef,
+    private reportService: ReportService) {
     Amplify.configure(outputs);
   }
   ngOnInit() {
@@ -75,7 +78,12 @@ export class AppComponent implements OnInit {
 
   // Change language
   public changeLanguage(language: string) {
-    this.translate.use(language);
+    if (language) {
+      this.translate.use(language).subscribe(() => {
+        this.translationsReady = true;
+        this.cdr.markForCheck();
+      });
+    }
     this.header = this.translate.instant('menu.myLists');
   }
 
@@ -84,9 +92,15 @@ export class AppComponent implements OnInit {
     this.translate.setFallbackLang('en');
 
     if (this.translate.getBrowserLang() !== undefined) {
-        this.translate.use(this.translate.getBrowserLang()!);
+        this.translate.use(this.translate.getBrowserLang()!).subscribe(() => {
+          this.translationsReady = true;
+          this.cdr.markForCheck();
+        });
     } else {
-        this.translate.use('en');
+        this.translate.use('en').subscribe(() => {
+          this.translationsReady = true;
+          this.cdr.markForCheck();
+        });
     }
   }
 
@@ -124,6 +138,10 @@ export class AppComponent implements OnInit {
     } else if (url == 'report-list') {
       this.header = this.translate.instant('menu.myReports');
     }
+  }
+
+  editCategories() {
+    this.reportService.editMode = !this.reportService.editMode;
   }
 }
 

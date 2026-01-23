@@ -1,45 +1,48 @@
 
 <div *ngIf="!loading">
   <ion-card style="padding: 0px;">
+
+      <ion-input *ngIf="reportService.editMode" i18n [(ngModel)]="newCategoryName" type="text" name="newCategoryName" lines="none" [placeholder]="'reports.newCategory' | translate" fill="solid" style="--placeholder-opacity: 0.9; --padding-start: 20px; --padding-end: 15px; font-size: 18px; --background: wheat;">
+        <ion-icon slot="end" class="add-icon" [icon]="addCircleOutline" (click)="addCategory()"></ion-icon>
+      </ion-input>
+
     <ion-list class="def-list-no-border">
-      <ion-accordion-group>
+      <ion-reorder-group [disabled]="false" (ionItemReorder)="handleItemReorder($event)">
+        <ng-container *ngFor="let category of categories; trackBy: trackByCategory">
 
-          <ion-accordion *ngFor="let category of categories">
-            <div slot="header">
-              <ion-row lines="full" class='text-md list-row'>
-                <ion-col size="7" style="padding-left: 10px; color: Black;" class="vert-align">
-                  <div class="wrap">{{ category.name }}</div>
-                </ion-col>
-                <ion-col size="3" class="vert-align">
-                  <div>
-                    <ion-label style="color: rgb(112, 110, 101);" type="decimal">{{category.totalCost}} €</ion-label>
-                  </div>
-                </ion-col>
-                <ion-col size="1" class="vert-align">
-                  <ion-icon [icon]="chevronDown" style="color: rgb(112,110,101); --transform: rotate(0deg);"></ion-icon>
-                </ion-col>
-              </ion-row>
-            </div>
+          <ion-row lines="full" class='text-md list-row' style="background-color: wheat; border: solid 2px rgb(58, 58, 58); border-radius: 5px; padding: 10px;">
+            <ion-col size="7" style="padding-left: 10px; color: rgb(57, 57, 57);" class="vert-align">
+              <div class="wrap"><strong>{{ category.name }}</strong></div>
+            </ion-col>
+            <ion-col size="3" class="vert-align">
+              <div>
+                <ion-label style="color: rgb(112, 110, 101);" type="decimal">{{category.totalCost}} €</ion-label>
+              </div>
+            </ion-col>
+            <ion-col *ngIf="reportService.editMode" size="2" class="vert-align">
+              <ion-icon class="trash-icon" [icon]="trashBin"  (click)="deleteCategory(category)"></ion-icon>
+            </ion-col>
+          </ion-row>
 
-            <div slot="content">
-              <ion-row *ngFor="let item of (category.items || [])" class="text-sm" style="padding-left: 10px;">
-                <ion-col size="7" style="padding-left: 30px; color: rgba(0,0,0,0.85);" class="vert-align">
-                  <div class="wrap">{{ item.name }}</div>
-                </ion-col>
-                <ion-col size="3" class="vert-align">
-                  <div>
-                    <ion-label style="color: rgb(112, 110, 101);">{{ item.price ?? 0 }} €</ion-label>
-                  </div>
-                </ion-col>
-                <ion-col size="1" class="vert-align">
-                  <div>
-                    <ion-icon class="move-icon" [icon]="menuOutline"></ion-icon>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </div>
-          </ion-accordion>
-      </ion-accordion-group>
+          <ion-reorder *ngFor="let item of category.items; trackBy: trackByItem">
+            <ion-row class="text-sm" style="padding-left: 10px;">
+              <ion-col size="7" style="padding-left: 30px; color: rgba(0,0,0,0.85);" class="vert-align">
+                <div class="wrap">{{ item.name }}</div>
+              </ion-col>
+              <ion-col size="3" class="vert-align">
+                <div>
+                  <ion-label style="color: rgb(112, 110, 101);">{{ item.cost ?? 0 }} €</ion-label>
+                </div>
+              </ion-col>
+              <ion-col size="1" class="vert-align">
+                <div>
+                  <ion-icon class="move-icon" [icon]="menuOutline"></ion-icon>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-reorder>
+        </ng-container>
+      </ion-reorder-group>
     </ion-list>
   </ion-card>
 </div>

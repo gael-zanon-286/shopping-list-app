@@ -29,11 +29,12 @@
               </ion-menu-toggle>
 
 
-              <ion-item class="popover" (click)="changeLanguage('')" id="nested-trigger"><b>{{ 'menu.languages' | translate }}</b></ion-item>
+              <ion-item class="popover" id="nested-trigger"><b>{{ 'menu.languages' | translate }}</b></ion-item>
 
               <ion-popover side="bottom" alignment="start" trigger="nested-trigger" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-content>
+
                     <ion-list class="popover">
                       <ion-menu-toggle>
                         <ion-item [button]="true" (click)="changeLanguage('es')">{{ 'menu.spanish' | translate }}</ion-item>
@@ -68,7 +69,7 @@
               <div class="wrap">{{header}}</div>
             </ion-title>
 
-            <div *ngIf="router.url.startsWith('/historic-lists/') || router.url.startsWith('/my-lists/')" slot="end">
+            <div *ngIf="router.url.startsWith('/historic-lists/') || router.url.startsWith('/my-lists/') || router.url.startsWith('/report-list/')" slot="end">
               <ion-icon class="options-icon" [icon]="options" id="options-trigger"></ion-icon>
               <ion-popover side="bottom" alignment="start" trigger="options-trigger" [dismissOnSelect]="true">
                 <ng-template>
@@ -77,6 +78,7 @@
                       <ion-item class="popover" *ngIf="router.url.startsWith('/historic-lists/')" [button]="true" [detail]="false" (click)="deleteList()">{{"deleteList" | translate}}</ion-item>
                       <ion-item class="popover" *ngIf="router.url.startsWith('/my-lists/')" [button]="true" [detail]="false" (click)="deleteStriked()">{{"deleteStriked" | translate}}</ion-item>
                       <ion-item class="popover" *ngIf="router.url.startsWith('/my-lists/')" [button]="true" [detail]="false" (click)="addFriend()">{{"addUser" | translate}}</ion-item>
+                      <ion-item class="popover" *ngIf="router.url.startsWith('/report-list/')" [button]="true" [detail]="false" (click)="editCategories()">{{"editCategories" | translate}}</ion-item>
                     </ion-list>
                   </ion-content>
                 </ng-template>

@@ -1,8 +1,8 @@
 <div *ngIf="!loading">
   <ion-row>
   <ion-card>
-    <ion-item (click)="openModal()">
-      <ion-label style="--placeholder-opacity: 0.9; --padding-start: 15px; --padding-end: 15px; --background: wheat;">{{'reports.newReport' | translate}}</ion-label>
+    <ion-item (click)="openModal()"  style="--placeholder-opacity: 0.9; --padding-start: 15px; --padding-end: 15px; font-size: 18px; --background: wheat;" lines="none">
+      <ion-label>{{'reports.newReport' | translate}}</ion-label>
       <ion-icon slot="end" class="add-icon" [icon]="addCircleOutline"></ion-icon>
     </ion-item>
   </ion-card>

@@ -8,6 +8,7 @@ import { TranslateService } from "@ngx-translate/core";
   providedIn: 'root',
 })
 export class ReportService {
+  editMode: boolean = false;
   private client;
 
   constructor(private translate: TranslateService) {
@@ -103,4 +104,36 @@ export class ReportService {
       return null;
     }
   }
+
+  // Add or remove categories from report
+  async updateCategories(reportId: string, categories: any[]): Promise<Schema['Report']['type'] | null> {
+    try {
+      // Calculate total cost from all categories
+      const totalCost = categories.reduce((sum: number, cat: any) => {
+        const catCost = typeof cat.totalCost === 'number' ? cat.totalCost : Number(cat.totalCost) || 0;
+        return sum + catCost;
+      }, 0);
+
+      // a.json() field requires JSON string
+      const categoriesJson = JSON.stringify(categories);
+
+      const updatedReport = await this.client.models.Report.update({
+        id: reportId,
+        categories: categoriesJson,
+        totalCost: totalCost,
+      });
+
+      if (updatedReport.errors && updatedReport.errors.length > 0) {
+        console.error('Update errors:', updatedReport.errors);
+      }
+
+      return updatedReport.data ?? null;
+    } catch (error) {
+      console.error('error updating categories', error);
+      console.error('error details:', JSON.stringify(error, null, 2));
+      return null;
+    }
+  }
+
 }
+

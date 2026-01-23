@@ -2,7 +2,7 @@
   <ion-row>
   <ion-card>
     <form onSubmit="addList(listName)">
-      <ion-input i18n [(ngModel)]="newListName" type="text" name="newListName" [placeholder]="'lists.newList' | translate" fill="solid" style="--placeholder-opacity: 0.9; --padding-start: 15px; --padding-end: 15px; --background: wheat;">
+      <ion-input i18n [(ngModel)]="newListName" type="text" name="newListName" [placeholder]="'lists.newList' | translate" fill="solid" style="--placeholder-opacity: 0.9; --padding-start: 15px; --padding-end: 15px; font-size: 18px; --background: wheat;">
         <ion-icon slot="end" class="add-icon" [icon]="addCircleOutline" (click)="addList()"></ion-icon>
       </ion-input>
     </form>

@@ -3,11 +3,11 @@
     <ion-list class="def-list-no-border">
 
       <!-- Compatibility?? -->
-      <ion-input style="--background: transparent; opacity: 95%; --placeholder-opacity: 0.4; --padding-start: 15px; --padding-end: 15px;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
+      <ion-input style="--background: transparent; opacity: 90%; --placeholder-opacity: 0.5; --padding-start: 8px; --padding-end: 7px; font-size: 18px; --background: wheat; padding: 0px 10px 0px 10px !important;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
         <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>
       </ion-input>
       <ion-item *ngFor="let item of items" lines="full" [ngClass]="{'strikethrough' : item.isStriked}" class='text-md'>
-        <div slot="start" (click)="updateItem(item)" class="wrap">
+        <div slot="start" (click)="updateItem(item)" class="wrap" style="color: rgb(91, 91, 91);">
           {{ item.name }}
         </div>
         <div slot="end">

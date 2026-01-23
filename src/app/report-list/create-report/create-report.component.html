@@ -12,7 +12,9 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-input class="def-list" style="padding: 0 10px 0 10px !important;" labelPlacement="stacked" [label]="'reports.name' | translate" [(ngModel)]="name"></ion-input>
-  <ion-label>{{"reports.description" | translate}}</ion-label>
+    <br>
+  <ion-label>{{"reports.description" | translate}}:</ion-label>
+
   <ion-input class="def-list" type="date" style="padding: 0 10px 0 10px !important;" labelPlacement="stacked" [label]="'reports.startDate' | translate" [value]="dateService.dateToIso(startDate)" (ionChange)="onStartDateChange($event.detail.value)"></ion-input>
   <ion-input class="def-list" type="date" style="padding: 0 10px 0 10px !important;" labelPlacement="stacked" [label]="'reports.endDate' | translate" [value]="dateService.dateToIso(endDate)" (ionChange)="onEndDateChange($event.detail.value)"></ion-input>
 </ion-content>
