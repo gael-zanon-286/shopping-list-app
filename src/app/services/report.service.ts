@@ -41,6 +41,7 @@ export class ReportService {
       const mapped = items.map((item: any) => ({
         name: item?.name ?? null,
         cost: item?.cost ?? null,
+        date: list.date ?? null,
       }));
 
       defaultCategory.items.push(...mapped);

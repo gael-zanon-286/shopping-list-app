@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from "@ngx-translate/core";
 import { DateService } from '../services/date.service';
 import { ListService } from '../services/list.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, RefresherCustomEvent } from '@ionic/angular';
 
 const client = generateClient<Schema>();
 
@@ -32,14 +32,37 @@ export class UserListsComponent implements OnInit {
     private listService: ListService) {}
 
   async ngOnInit() {
+    // Set up listener to reload data when returning to it
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+
     this.shoppingLists = await this.listService.fetchLists('ACTIVE');
     this.loading = false;
   }
+
+  // Unsubscribe from listeners
+  ngOnDestroy() {
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+  }
+
+  handleVisibilityChange = async () => {
+    if (!document.hidden) {
+      this.shoppingLists = await this.listService.fetchLists('ACTIVE');
+    }
+  };
 
   // Obtain current user
   async getUser(): Promise<string> {
     const user = await fetchUserAttributes();
     return user['custom:DisplayName']!;
+  }
+
+  handleRefresh(event: RefresherCustomEvent) {
+    this.loading = true;
+    setTimeout(async () => {
+      this.shoppingLists = await this.listService.fetchLists('ACTIVE');
+      event.target.complete();
+      this.loading = false;
+    }, 1000);
   }
 
   // Create new list

@@ -1,3 +1,6 @@
+<ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
 <div *ngIf="!loading">
   <ion-card style="padding: 0px;">
     <ion-list class="def-list-no-border">

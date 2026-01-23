@@ -1,5 +1,8 @@
 
-<div *ngIf="!loading">
+<ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
+<ion-content *ngIf="!loading">
   <ion-card style="padding: 0px;">
 
       <ion-input *ngIf="reportService.editMode" i18n [(ngModel)]="newCategoryName" type="text" name="newCategoryName" lines="none" [placeholder]="'reports.newCategory' | translate" fill="solid" style="--placeholder-opacity: 0.9; --padding-start: 20px; --padding-end: 15px; font-size: 18px; --background: wheat;">
@@ -24,25 +27,27 @@
             </ion-col>
           </ion-row>
 
-          <ion-reorder *ngFor="let item of category.items; trackBy: trackByItem">
+          <div *ngFor="let item of category.items; trackBy: trackByItem">
             <ion-row class="text-sm" style="padding-left: 10px;">
-              <ion-col size="7" style="padding-left: 30px; color: rgba(0,0,0,0.85);" class="vert-align">
-                <div class="wrap">{{ item.name }}</div>
+              <ion-col size="8" style="padding-left: 10px; color: rgba(0,0,0,0.85);" class="vert-align">
+                <div class="wrap">{{ item.name }} - <span style="color: rgba(112, 112, 112, 0.85)">{{ dateService.parseDate(item.date) }}</span></div>
               </ion-col>
-              <ion-col size="3" class="vert-align">
+              <ion-col size="2" class="vert-align">
                 <div>
                   <ion-label style="color: rgb(112, 110, 101);">{{ item.cost ?? 0 }} €</ion-label>
                 </div>
               </ion-col>
-              <ion-col size="1" class="vert-align">
-                <div>
-                  <ion-icon class="move-icon" [icon]="menuOutline"></ion-icon>
-                </div>
+              <ion-col size="2" class="vert-align">
+                <ion-reorder>
+                  <div>
+                    <ion-icon class="move-icon" [icon]="menuOutline"></ion-icon>
+                  </div>
+                </ion-reorder>
               </ion-col>
             </ion-row>
-          </ion-reorder>
+          </div>
         </ng-container>
       </ion-reorder-group>
     </ion-list>
   </ion-card>
-</div>
+</ion-content>

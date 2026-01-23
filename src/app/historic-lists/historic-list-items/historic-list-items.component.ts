@@ -8,6 +8,7 @@ import { ListStoreService } from '../../services/list-store.service';
 import { DateService } from '../../services/date.service';
 import { ItemService } from '../../services/item.service';
 import { ListService } from '../../services/list.service';
+import { RefresherCustomEvent } from '@ionic/angular';
 
 const client = generateClient<Schema>();
 
@@ -39,8 +40,31 @@ export class HistoricListItemsComponent  implements OnInit {
     this.storeService.list = this.shoppingList;
     this.totalCost = this.shoppingList!.totalCost!;
 
+    // Set up listener to reload data when returning to it
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+
     this.loading = false;
   }
+
+  handleRefresh(event: RefresherCustomEvent) {
+    this.loading = true;
+    setTimeout(async () => {
+      await this.fetchList();
+      event.target.complete();
+      this.loading = false;
+    }, 1000);
+  }
+
+  // Unsubscribe from listeners
+  ngOnDestroy() {
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+  }
+
+  handleVisibilityChange = async () => {
+    if (!document.hidden) {
+      await this.fetchList();
+    }
+  };
 
   // Obtain list data
   async fetchList() {

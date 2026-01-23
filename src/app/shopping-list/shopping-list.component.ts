@@ -10,7 +10,7 @@ import { ListService } from '../services/list.service';
 import { ItemService } from '../services/item.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import type { OverlayEventDetail } from '@ionic/core';
+import type { OverlayEventDetail, RefresherCustomEvent } from '@ionic/core';
 
 @Component({
   selector: 'app-shopping-list',
@@ -51,6 +51,9 @@ export class ShoppingListComponent  implements OnInit {
       this.openModal();
     });
 
+    // Set up listener to reload data when returning to it
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+
     this.listId = this.route.snapshot.paramMap.get('id')!;
 
     await this.fetchList();
@@ -58,10 +61,26 @@ export class ShoppingListComponent  implements OnInit {
     this.loading = false;
   }
 
-  // Unsubscribe from header service
+  // Unsubscribe from listeners
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+  }
+
+  handleVisibilityChange = () => {
+    if (!document.hidden) {
+      this.fetchList();
+    }
+  };
+
+  handleRefresh(event: RefresherCustomEvent) {
+    this.loading = true;
+    setTimeout(async () => {
+      this.shoppingList = await this.listService.fetchList(this.listId);
+      event.target.complete();
+      this.loading = false;
+    }, 1000);
   }
 
   // Obtain list data

@@ -3,7 +3,7 @@ import { trashBin, addCircleOutline } from "ionicons/icons";
 import { DateService } from '../services/date.service';
 import { Schema } from '../../../amplify/data/resource';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, RefresherCustomEvent } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CreateReportComponent } from './create-report/create-report.component';
 import { ReportService } from '../services/report.service';
@@ -28,9 +28,23 @@ export class ReportListComponent  implements OnInit {
   ) { }
 
   async ngOnInit() {
+    // Set up listener to reload data when returning to it
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+
     this.reportList = await this.reportService.fetchReports();
     this.loading = false;
   }
+
+  // Unsubscribe from listeners
+  ngOnDestroy() {
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+  }
+
+  handleVisibilityChange = async () => {
+    if (!document.hidden) {
+      this.reportList = await this.reportService.fetchReports();
+    }
+  };
 
   // Add Report
   async addReport(data: any) {
@@ -56,8 +70,7 @@ export class ReportListComponent  implements OnInit {
   // Deletion confirmation dialog
   async confirmationAlert(list: Schema['Report']['type']) {
     const alert = await this.alertController.create({
-      header: this.translate.instant('confirmation'),
-      subHeader: list.name,
+      header: list.name,
       message: this.translate.instant('reports.deleteConfirmation'),
       buttons: [
         {
@@ -89,6 +102,15 @@ export class ReportListComponent  implements OnInit {
     if (role === 'confirm') {
       this.addReport(data);
     }
+  }
+
+  handleRefresh(event: RefresherCustomEvent) {
+    this.loading = true;
+    setTimeout(async () => {
+      this.reportList = await this.reportService.fetchReports();
+      event.target.complete();
+      this.loading = false;
+    }, 1000);
   }
 
 }

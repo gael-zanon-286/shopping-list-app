@@ -1,4 +1,7 @@
 
+<ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
 <div *ngIf="!loading">
 
   <ion-card>
@@ -11,7 +14,7 @@
   <ion-card style="padding: 0px;">
     <ion-list class="def-list-no-border">
         <!-- Compatibility?? -->
-        <ion-input *ngIf="editMode" style="--background: transparent; opacity: 90%; --placeholder-opacity: 0.7; --padding-start: 15px; --padding-end: 15px;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
+        <ion-input *ngIf="editMode" style="--background: transparent; opacity: 90%; --placeholder-opacity: 1; --padding-start: 15px; --padding-end: 15px;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
           <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>
         </ion-input>
 
