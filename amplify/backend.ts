@@ -27,17 +27,9 @@ const listUsersStatement = new iam.PolicyStatement({
 
 inviteUserLambda.addToRolePolicy(listUsersStatement);
 
-/* // Allow authenticated users to upload & read audio files
-backend.auth.resources.authenticatedUserIamRole.addToPrincipalPolicy(
-  new iam.PolicyStatement({
-    sid: 'AllowAudioBucketAccess',
-    actions: ['s3:PutObject', 's3:GetObject'],
-    resources: [`${backend.storage.resources.bucket.bucketArn}/*`]
-  })
-);
+const authRole = backend.auth.resources.authenticatedUserIamRole;
 
-// Allow authenticated users to use AWS Transcribe
-backend.auth.resources.authenticatedUserIamRole.addToPrincipalPolicy(
+authRole.addToPrincipalPolicy(
   new iam.PolicyStatement({
     sid: 'AllowTranscribe',
     actions: [
@@ -46,6 +38,6 @@ backend.auth.resources.authenticatedUserIamRole.addToPrincipalPolicy(
     ],
     resources: ['*'],
   })
-); */
+);
 
 
