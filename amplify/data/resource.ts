@@ -10,7 +10,7 @@ specifies that any user authenticated via an API key can "create", "read",
 =========================================================================*/
 const schema = a.schema({
   ShoppingList: a.model({
-    type: a.enum(['ACTIVE', 'HISTORIC']),
+    type: a.enum(['ACTIVE', 'HISTORIC', 'DEFAULT']),
     items: a.hasMany("Item", "listID"),
     users: a.string().array(),
     name: a.string().required(),

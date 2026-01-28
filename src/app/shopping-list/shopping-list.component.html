@@ -7,7 +7,7 @@
 
       <!-- Compatibility?? -->
       <ion-input style="--background: transparent; opacity: 90%; --placeholder-opacity: 0.5; --padding-start: 8px; --padding-end: 7px; font-size: 18px; --background: wheat; padding: 0px 10px 0px 10px !important;" [(ngModel)]="newItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
-        <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem()"></ion-icon>
+        <ion-icon slot="end" class="add-icon" [icon]="add" (click)="createItem(newItemName)"></ion-icon>
       </ion-input>
       <ion-item *ngFor="let item of items" lines="full" [ngClass]="{'strikethrough' : item.isStriked}" class='text-md'>
         <div slot="start" (click)="updateItem(item)" class="wrap" style="color: rgb(91, 91, 91);">
@@ -18,5 +18,33 @@
         </div>
       </ion-item>
     </ion-list>
+  </ion-card>
+  <ion-card style="padding: 0px;">
+    <ion-accordion-group>
+      <ion-accordion>
+        <ion-item slot="header" lines="none">
+          <h3>{{"lists.common" | translate}}</h3>
+          <ion-icon slot="end" (click)="$event.stopPropagation()" class="create" [icon]="create" (click)="toggleEditMode()"></ion-icon>
+        </ion-item>
+        <div slot="content">
+          <ion-list class="def-list-no-border">
+            <ion-input *ngIf="editMode" style="--background: transparent; opacity: 90%; --placeholder-opacity: 0.5; --padding-start: 8px; --padding-end: 7px; font-size: 18px; --background: wheat; padding: 0px 10px 0px 10px !important;" [(ngModel)]="regularItemName" type="text" [placeholder]="'items.newItem' | translate" fill="solid">
+              <ion-icon slot="end" class="add-icon" [icon]="add" (click)="addRegularItem(regularItemName)"></ion-icon>
+            </ion-input>
+            <ion-item *ngFor="let item of commonItems" lines="full" class='text-md'>
+              <div slot="start" class="wrap" style="color: rgb(91, 91, 91);">
+                {{ item.name }}
+              </div>
+              <div slot="end">
+                <ion-checkbox [(ngModel)]="item.isStriked" (click)="checkboxToggle(item)"></ion-checkbox>
+              </div>
+              <div slot="end" *ngIf="editMode">
+                <h4 slot="end"><ion-icon class="trash-icon" [icon]="close" (click)="deleteRegularItem(item)"></ion-icon></h4>
+              </div>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
   </ion-card>
 </div>

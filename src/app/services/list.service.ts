@@ -58,6 +58,28 @@ export class ListService {
     }
   }
 
+  // Create shopping list with common items
+  async addDefaultList(): Promise<Schema['ShoppingList']['type'] | undefined> {
+    const user = await getCurrentUser();
+    try {
+      const { data } = await this.client.models.ShoppingList.create({
+        type: 'DEFAULT',
+        date: new Date().toISOString(),
+        name: 'DEFAULT',
+        users: [user.userId]
+      },
+      {
+        authMode: 'userPool',
+      });
+
+      return data ?? undefined;
+
+    } catch (error) {
+      console.error('error creating item', error);
+      return undefined;
+    }
+  }
+
   // Add user to allowed list of users on list
   async updateListUsers(newOwner: string, shoppingList: Schema['ShoppingList']['type']) {
     const newOwnerId = await this.shoppingListService.getUserIdByEmail(newOwner);
@@ -107,6 +129,20 @@ export class ListService {
     try {
       const response = await this.client.models.ShoppingList.get({ id: id });
       return response.data ?? null;
+    } catch (error) {
+      console.error('error fetching items', error);
+      return null;
+    }
+  }
+
+  // Get default list
+  async fetchDefaultList(): Promise<Schema['ShoppingList']['type'] | null> {
+    try {
+      const {data: response } = await this.client.models.ShoppingList.list({
+        filter: {
+            type: { eq: 'DEFAULT' }
+          } });
+      return response[0] ?? null;
     } catch (error) {
       console.error('error fetching items', error);
       return null;

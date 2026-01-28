@@ -36,6 +36,7 @@ export class UserListsComponent implements OnInit {
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
 
     this.shoppingLists = await this.listService.fetchLists('ACTIVE');
+
     this.loading = false;
   }
 
@@ -67,6 +68,9 @@ export class UserListsComponent implements OnInit {
 
   // Create new list
   async addList() {
+    if (this.shoppingLists.length === 0) {
+      await this.listService.addDefaultList();
+    }
     if (this.newListName) {
       await this.listService.addList(this.newListName);
       this.shoppingLists = await this.listService.fetchLists('ACTIVE');

@@ -33,10 +33,31 @@ export class ItemService {
   }
 
   // Delete item
-  async deleteItem(item: Schema['Item']['type']): Promise<void> {
+  async deleteItem(item: Schema['Item']['type'], listId: string): Promise<void> {
     try {
       const itemToBeDeleted = {
-        id: item.id
+        id: item.id,
+        listID: listId
+      }
+      await this.client.models.Item.delete(itemToBeDeleted);
+    } catch (error) {
+      console.error('Failed to delete item:', error);
+      return undefined;
+    }
+  }
+
+  // Delete item
+  async deleteItemByName(name: string, listId: string): Promise<void> {
+    const {data: response } = await this.client.models.Item.list({
+      filter: {
+        name: { eq: name },
+        listID: { eq: listId}
+      }
+    });
+    console.log(response);
+    try {
+      const itemToBeDeleted = {
+        id: response[0].id,
       }
       await this.client.models.Item.delete(itemToBeDeleted);
     } catch (error) {

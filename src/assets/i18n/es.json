@@ -11,7 +11,8 @@
     "myReports": "Mis Informes"
   },
   "lists": {
-    "newList": "Nueva Lista"
+    "newList": "Nueva Lista",
+    "common": "Productos Guardados"
   },
   "reports": {
     "newReport": "Nuevo Informe",
@@ -47,7 +48,7 @@
   "no": "No",
   "options": "Opciones",
   "deleteList": "Eliminar Lista",
-  "deleteStriked": "Mover Tachados a Nuevo Ticket",
+  "deleteStriked": "Eliminar Tachados y Crear Nuevo Ticket",
   "addUser": "Añadir Usuario a Lista",
   "confirmDeletion": "¿Desea mover los productos tachados a un ticket?",
   "confirmListDeletion": "¿Desea eliminar esta lista?",

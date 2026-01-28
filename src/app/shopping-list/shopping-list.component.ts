@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Schema } from '../../../amplify/data/resource';
-import { add, close } from 'ionicons/icons';
+import { add, close, create } from 'ionicons/icons';
 import { HeaderService } from '../services/header.service';
 import { IonModal, ModalController, AlertController } from '@ionic/angular';
 import { AddFriendModal } from './add-friend/add-friend-modal.component';
@@ -10,7 +10,7 @@ import { ListService } from '../services/list.service';
 import { ItemService } from '../services/item.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import type { OverlayEventDetail, RefresherCustomEvent } from '@ionic/core';
+import type { RefresherCustomEvent } from '@ionic/core';
 
 @Component({
   selector: 'app-shopping-list',
@@ -24,9 +24,14 @@ export class ShoppingListComponent  implements OnInit {
   listId: string = '';
   loading = true;
   items: Schema['Item']['type'][] = [];
+  commonItems: Schema['Item']['type'][] = [];
   shoppingList!: Schema['ShoppingList']['type'] | null;
+  defaultList!: Schema['ShoppingList']['type'] | null;
+  editMode: boolean = false;
   add = add;
+  create = create;
   newItemName: string = '';
+  regularItemName: string = '';
   close = close;
 
   constructor(
@@ -58,6 +63,9 @@ export class ShoppingListComponent  implements OnInit {
 
     await this.fetchList();
 
+    this.defaultList = await this.listService.fetchDefaultList();
+    this.commonItems = await this.itemService.fetchItems(this.defaultList!);
+
     this.loading = false;
   }
 
@@ -83,6 +91,10 @@ export class ShoppingListComponent  implements OnInit {
     }, 1000);
   }
 
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+  }
+
   // Obtain list data
   async fetchList() {
     this.shoppingList = await this.listService.fetchList(this.listId);
@@ -97,16 +109,51 @@ export class ShoppingListComponent  implements OnInit {
     this.items = await this.itemService.fetchItems(this.shoppingList!);
   }
 
+  // Obtain all items in default list
+  async fetchCommonItems() {
+    this.commonItems = await this.itemService.fetchItems(this.defaultList!);
+  }
+
   // Create item
-  async createItem() {
-    await this.itemService.createItem(this.newItemName, this.shoppingList!);
+  async createItem(name: string) {
+    if (this.newItemName === '') {
+      return;
+    } else {
+      await this.itemService.createItem(name, this.shoppingList!);
+      this.fetchItems();
+      this.newItemName = '';
+    }
+  }
+
+  // Create regular item
+  async addRegularItem(name: string) {
+    await this.itemService.createItem(name, this.defaultList!);
+    this.fetchCommonItems();
+    this.regularItemName = '';
+  }
+
+  // Checkbox toggle
+  async checkboxToggle(item: Schema['Item']['type']) {
+    await this.itemService.strikeItem(item);
+    if (item.isStriked) {
+      await this.itemService.createItem(item.name, this.shoppingList!);
+    } else {
+      await this.itemService.deleteItemByName(item.name, this.shoppingList!.id);
+    }
     this.fetchItems();
-    this.newItemName = '';
+  }
+
+  // Delete regular item
+  async deleteRegularItem(item: Schema['Item']['type']) {
+    await this.itemService.deleteItem(item, this.defaultList!.id);
+
+    this.fetchCommonItems();
   }
 
   // Delete item
   async deleteItem(item: Schema['Item']['type']) {
-    await this.itemService.deleteItem(item);
+    console.log('deleting item', item);
+    await this.itemService.deleteItem(item, this.shoppingList!.id);
 
     this.fetchItems();
   }
