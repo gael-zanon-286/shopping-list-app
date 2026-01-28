@@ -27,7 +27,7 @@ const listUsersStatement = new iam.PolicyStatement({
 
 inviteUserLambda.addToRolePolicy(listUsersStatement);
 
-// Allow authenticated users to upload & read audio files
+/* // Allow authenticated users to upload & read audio files
 backend.auth.resources.authenticatedUserIamRole.addToPrincipalPolicy(
   new iam.PolicyStatement({
     sid: 'AllowAudioBucketAccess',
@@ -46,6 +46,6 @@ backend.auth.resources.authenticatedUserIamRole.addToPrincipalPolicy(
     ],
     resources: ['*'],
   })
-);
+); */
 
 
