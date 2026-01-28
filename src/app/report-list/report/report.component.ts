@@ -101,6 +101,8 @@ export class ReportComponent  implements OnInit {
     }
 
     const movedData = list[from];
+    list.splice(from, 1);
+    const targetData = list[to - 1];
 
     if (movedData.type !== 'item') {
       event.detail.complete(true);
@@ -119,9 +121,6 @@ export class ReportComponent  implements OnInit {
     // Remove from list before re-inserting on target position
     const sourceCategory = this.categories[sourceCatIndex];
     const [item] = sourceCategory.items.splice(sourceItemIndex, 1);
-    list.splice(from, 1);
-
-    const targetData = list[to - 1];
 
     if (targetData.type === 'item') {
       // Insert at target item index if dropped on item
