@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Schema } from '../../../amplify/data/resource';
-import { add, close, create } from 'ionicons/icons';
+import { add, close, create, mic } from 'ionicons/icons';
 import { HeaderService } from '../services/header.service';
 import { IonModal, ModalController, AlertController } from '@ionic/angular';
 import { AddFriendModal } from './add-friend/add-friend-modal.component';
@@ -11,6 +11,7 @@ import { ItemService } from '../services/item.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import type { RefresherCustomEvent } from '@ionic/core';
+import { VoiceRecognitionService } from '../services/voice-recognition.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -23,12 +24,14 @@ export class ShoppingListComponent  implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
   listId: string = '';
   loading = true;
+  isListening: boolean = false;
   items: Schema['Item']['type'][] = [];
   commonItems: Schema['Item']['type'][] = [];
   shoppingList!: Schema['ShoppingList']['type'] | null;
   defaultList!: Schema['ShoppingList']['type'] | null;
   editMode: boolean = false;
   add = add;
+  mic = mic;
   create = create;
   newItemName: string = '';
   regularItemName: string = '';
@@ -36,6 +39,7 @@ export class ShoppingListComponent  implements OnInit {
 
   constructor(
     private alertController: AlertController,
+    private voiceRecognitionService: VoiceRecognitionService,
     private router: Router,
     private route: ActivatedRoute,
     private headerService: HeaderService,
@@ -43,6 +47,9 @@ export class ShoppingListComponent  implements OnInit {
     private listService: ListService,
     private translate: TranslateService,
     private itemService: ItemService) {
+      this.voiceRecognitionService.textEmitter.subscribe((text: string) => {
+      this.newItemName = text;
+    });
   }
 
   async ngOnInit() {
@@ -152,7 +159,6 @@ export class ShoppingListComponent  implements OnInit {
 
   // Delete item
   async deleteItem(item: Schema['Item']['type']) {
-    console.log('deleting item', item);
     await this.itemService.deleteItem(item, this.shoppingList!.id);
 
     this.fetchItems();
@@ -227,5 +233,30 @@ export class ShoppingListComponent  implements OnInit {
    });
    await alert.present();
   }
+
+  startRecording() {
+    if (!this.isListening) {
+      this.isListening = true;
+      this.voiceRecognitionService.start();
+    }
+  }
+
+  stopRecording() {
+    if (this.isListening) {
+      this.voiceRecognitionService.stop();
+      this.createItem(this.newItemName);
+      this.voiceRecognitionService.text = '';
+      this.isListening = false;
+    }
+  }
+
+  toggleRecording() {
+    if (!this.isListening) {
+      this.startRecording();
+    } else {
+      this.stopRecording();
+    }
+  }
+
 }
 

@@ -11,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ShoppingListComponent, AddFriendModal],
-  exports: [ShoppingListComponent, AddFriendModal],
+  exports: [ShoppingListComponent, AddFriendModal ],
   imports: [
     CommonModule, IonicModule, FormsModule, ShoppingListRoutingModule, TranslateModule
   ]

@@ -1,15 +1,14 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as cdk from "aws-cdk-lib";
 import { data } from './data/resource';
 import { inviteUser } from './lambda-functions/invite-user/resource';
-import { storage } from './storage/resource';
 
 export const backend: any = defineBackend({
   auth,
   data,
-  inviteUser,
-  storage
+  inviteUser
 });
 
 const inviteUserLambda = backend.inviteUser.resources.lambda;
@@ -26,18 +25,4 @@ const listUsersStatement = new iam.PolicyStatement({
 });
 
 inviteUserLambda.addToRolePolicy(listUsersStatement);
-
-const authRole = backend.auth.resources.authenticatedUserIamRole;
-
-authRole.addToPrincipalPolicy(
-  new iam.PolicyStatement({
-    sid: 'AllowTranscribe',
-    actions: [
-      'transcribe:StartTranscriptionJob',
-      'transcribe:GetTranscriptionJob',
-    ],
-    resources: ['*'],
-  })
-);
-
 

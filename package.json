@@ -31,7 +31,7 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "amazon-cognito-identity-js": "^6.3.16",
-    "aws-amplify": "^6.6.6",
+    "aws-amplify": "^6.16.0",
     "file-saver": "^2.0.5",
     "i18next": "^25.7.1",
     "rxjs": "~7.8.0",

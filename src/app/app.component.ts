@@ -11,6 +11,7 @@ import { ListStoreService } from './services/list-store.service';
 import { ListService } from './services/list.service';
 import { Location } from '@angular/common';
 import { ReportService } from './services/report.service';
+import { VoiceRecognitionService } from './services/voice-recognition.service';
 
 Amplify.configure(outputs);
 
@@ -38,8 +39,14 @@ export class AppComponent implements OnInit {
   showMenuButton: boolean = true;
   translationsReady: boolean = false;
 
+  langMap: Record<string, string> = {
+    en: 'en-US',
+    es: 'es-ES',
+  };
+
   constructor(
     private translate: TranslateService,
+    private voiceRecognitionService: VoiceRecognitionService,
     public authenticator: AuthenticatorService,
     public router: Router,
     private headerService: HeaderService,
@@ -83,6 +90,11 @@ export class AppComponent implements OnInit {
         this.translationsReady = true;
         this.cdr.markForCheck();
       });
+
+      const speechLang = this.langMap[language];
+      if (speechLang) {
+        this.voiceRecognitionService.setLanguage(speechLang);
+      }
     }
     this.header = this.translate.instant('menu.myLists');
   }
