@@ -128,6 +128,7 @@ export class ShoppingListComponent  implements OnInit {
     } else {
       await this.itemService.createItem(name, this.shoppingList!);
       this.fetchItems();
+      this.voiceRecognitionService.text = '';
       this.newItemName = '';
     }
   }
