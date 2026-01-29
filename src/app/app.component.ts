@@ -103,17 +103,16 @@ export class AppComponent implements OnInit {
   initTranslate() {
     this.translate.setFallbackLang('en');
 
-    if (this.translate.getBrowserLang() !== undefined) {
-        this.translate.use(this.translate.getBrowserLang()!).subscribe(() => {
-          this.translationsReady = true;
-          this.cdr.markForCheck();
-        });
-    } else {
-        this.translate.use('en').subscribe(() => {
-          this.translationsReady = true;
-          this.cdr.markForCheck();
-        });
-    }
+    const browserLang = this.translate.getBrowserLang() || 'en';
+    this.translate.use(browserLang).subscribe(() => {
+      this.translationsReady = true;
+      this.cdr.markForCheck();
+
+      const speechLang = this.langMap[browserLang];
+      if (speechLang) {
+        this.voiceRecognitionService.setLanguage(speechLang);
+      }
+    });
   }
 
   // Delete list from options menu

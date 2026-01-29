@@ -30,14 +30,20 @@ export class VoiceRecognitionService {
     };
 
     this.recognition.onresult = (event: any) => {
-      const transcript = Array.from(event.results)
-        .map((result: any) => result[0].transcript)
-        .join('');
-      this.text = transcript.charAt(0).toUpperCase() + transcript.slice(1);
+      const lastResultIndex = event.results.length - 1;
+      let transcript = event.results[lastResultIndex][0].transcript;
+
+      transcript = transcript.trim();
+
       this.ngZone.run(() => {
-        this.textEmitter.emit(this.text);
+        const finalText = transcript[0].toUpperCase() + transcript.slice(1);
+
+        this.textEmitter.emit(finalText);
+
+        this.text = '';
       });
     };
+
 
 
     this.recognition.onerror = (event: any) => {

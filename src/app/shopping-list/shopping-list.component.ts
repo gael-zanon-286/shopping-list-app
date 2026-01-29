@@ -25,6 +25,7 @@ export class ShoppingListComponent  implements OnInit {
   listId: string = '';
   loading = true;
   isListening: boolean = false;
+  isListeningRegular: boolean = false;
   items: Schema['Item']['type'][] = [];
   commonItems: Schema['Item']['type'][] = [];
   shoppingList!: Schema['ShoppingList']['type'] | null;
@@ -48,8 +49,13 @@ export class ShoppingListComponent  implements OnInit {
     private translate: TranslateService,
     private itemService: ItemService) {
       this.voiceRecognitionService.textEmitter.subscribe((text: string) => {
-      this.newItemName = text;
-    });
+        if (this.isListening) {
+          this.newItemName = text;
+        }
+        if (this.isListeningRegular) {
+          this.regularItemName = text;
+        }
+      });
   }
 
   async ngOnInit() {
@@ -245,17 +251,41 @@ export class ShoppingListComponent  implements OnInit {
   stopRecording() {
     if (this.isListening) {
       this.voiceRecognitionService.stop();
-      this.createItem(this.newItemName);
+      this.newItemName = '';
       this.voiceRecognitionService.text = '';
       this.isListening = false;
     }
   }
 
   toggleRecording() {
-    if (!this.isListening) {
+    if (!this.isListening && !this.isListeningRegular) {
       this.startRecording();
     } else {
       this.stopRecording();
+    }
+  }
+
+  toggleRecordingDefaults() {
+    if (!this.isListening && !this.isListeningRegular) {
+      this.startRecordingDefaults();
+    } else {
+      this.stopRecordingDefaults();
+    }
+  }
+
+  startRecordingDefaults() {
+    if (!this.isListeningRegular) {
+      this.isListeningRegular = true;
+      this.voiceRecognitionService.start();
+    }
+  }
+
+  stopRecordingDefaults() {
+    if (this.isListeningRegular) {
+      this.voiceRecognitionService.stop();
+      this.regularItemName = '';
+      this.voiceRecognitionService.text = '';
+      this.isListeningRegular = false;
     }
   }
 
