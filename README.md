@@ -3,6 +3,8 @@
 Full-stack serverless shopping list PWA built with Angular and AWS Amplify.
 Supports authentication, localization, real-time data sync, and multi-device usage.
 
+This app is meant to assist in creating shopping lists faster, manage shopping tickers and create reports based on custom date intervals.
+
 ## Tech Stack
 
 - Frontend: TypeScript, Angular, Ionic
@@ -23,6 +25,7 @@ To run locally:
 - Designed and implemented frontend components and managed application state using Angular and Ionic
 - Implemented user authentication and integrated frontend with AWS APIs
 - Developed serverless backend functions (AWS Lambda) for data manipulation
+- Integrated a speech to text API to aid when filling forms.
 - Configured CI/CD with AWS Amplify
 
 ## Demo
