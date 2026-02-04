@@ -27,4 +27,6 @@ To run locally:
 
 ## Demo
 
-![Shared Shopping App Demo](src/assets/demo.gif)
+<p align="center">
+  <img src="assets/demo.gif" alt="Shared Shopping App Demo" />
+</p>
