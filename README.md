@@ -1,19 +1,30 @@
 ## Shared Shopping app
 
-A mobile app to create your own shopping lists.
+Full-stack serverless shopping list PWA built with Angular and AWS Amplify.
+Supports authentication, localization, real-time data sync, and multi-device usage.
 
-## Overview
+## Tech Stack
 
-This template equips you with a foundational Angular.js application integrated with AWS Amplify, streamlined for scalability and performance. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
+- Frontend: TypeScript, Angular, Ionic
+- Backend: AWS lambda, DynamoDB, API Gateway, Amazon IAM
+- Authorization: AWS Cognito
+- Hosting: AWS Amplify
+- DevOps / Tooling: GitHub Copilot
 
-## Features
+## Running the project
+This project depends on AWS-managed services (Amplify, Cognito, Lambda).
+For cost reasons, the backend infrastructure is not publicly deployed.
 
-- **Multi-user lists**: Add other users who can add items to a single list in real-time.
-- **Create tickets from a list**: Select items to remove and generate a ticket from said items, where they can be edited to add costs, creating a shopping history of each purchase.
-- **Create insights**: Create your own insights for item types through different filters (time frame, item type).
-- **Language support**: English and Spanish translation available.
+To run locally:
+- Frontend can be started with `npm install` and `npm start`
+- Backend requires an AWS account and Amplify configuration
 
-## Installation
+## What I worked on
+- Designed and implemented frontend components and managed application state using Angular and Ionic
+- Implemented user authentication and integrated frontend with AWS APIs
+- Developed serverless backend functions (AWS Lambda) for data manipulation
+- Configured CI/CD with AWS Amplify
 
-Not public. (PWA application) Open the link through the mobile device's browser and share to home screen.
+## Demo
 
+![Shared Shopping App Demo](src/assets/demo.gif)
