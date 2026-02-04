@@ -48,7 +48,7 @@
   "no": "No",
   "options": "Options",
   "deleteList": "Delete List",
-  "deleteStriked": "Remove Striked and Create New Ticket",
+  "deleteStriked": "Move Striked items into a New Ticket",
   "addUser": "Add User to List",
   "confirmDeletion": "Do you wish to move the striked items into a ticket?",
   "confirmListDeletion": "¿Do you wish to delete this list?",
